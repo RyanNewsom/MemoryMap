@@ -1,5 +1,7 @@
 package kylefrisbie.com.memorymap.Model;
 
+import android.location.Location;
+
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ public class Memory extends SugarRecord<Memory> {
     private ArrayList<String> people;
     private String photoURI;
     private String description;
-    private double[] location;
+    private Location location;
 
     public Memory() {}
 
     public Memory(String title, Date date, ArrayList<String> people,
-                  String photoURI, String description, double[] location) {
+                  String photoURI, String description, Location location) {
         this.title = title;
         this.date = date;
         this.people = people;
@@ -68,11 +70,11 @@ public class Memory extends SugarRecord<Memory> {
         this.description = description;
     }
 
-    public double[] getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(double[] location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 }
