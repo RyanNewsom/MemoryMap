@@ -33,6 +33,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mController = MemoryController.getInstance();
     }
 
 
@@ -53,47 +55,41 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        populateMemories();
+        populateMemories(mController.getMemories());
 
 //        mMap.getUiSettings().
 //        myLocation = mMap.getMyLocation();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-        mController = MemoryController.getInstance();
-
-
-
-    }
-
     private void populateMemories(ArrayList<Memory> theMemories) {
         mMemories = theMemories;
+        for(int i = 0; i < theMemories.size(); i++){
+            Memory currentMemory = theMemories.get(i);
+            addMemory(currentMemory);
+        }
 
     }
 
-    private void searchForMemory(){
+    private void searchForMemory(Memory memory){
+        //find the memory
+    }
 
+    private void goToLocation(Location location){
 
     }
 
-    private void goToMyLocation(){
-
-    }
-
-    private void expandAMemory(){
+    private void expandAMemory(Memory memoryClicked){
 
     }
 
     private void getMoreInfoForMemory(){
-
+        MemoryActivity memoryActivity = new MemoryActivity();
+        getSupportFragmentManager().beginTransaction().replace()
     }
 
     private void addMemory(Memory newMemory){
-
+        //Draw the memory
     }
 
 
