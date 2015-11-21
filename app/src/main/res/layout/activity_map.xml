@@ -18,5 +18,7 @@
         android:id="@+id/imageButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/mylocationicon"
+        android:background="#00ffffff" />
 </RelativeLayout>
