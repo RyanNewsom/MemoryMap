@@ -1,19 +1,17 @@
 package kylefrisbie.com.memorymap.presentation;
 
 import android.location.Location;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-import java.util.ArrayList;
+import java.util.List;
 
 import kylefrisbie.com.memorymap.Model.Memory;
 import kylefrisbie.com.memorymap.R;
@@ -24,7 +22,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private MemoryController mController;
     private GoogleMap mMap;
     private Location mUserLocation;
-    private ArrayList<Memory> mMemories;
+    private List<Memory> mMemories;
     private boolean mUserLocationInitiallyFound;
 
     @Override
@@ -76,7 +74,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         });
     }
 
-    private void populateMemories(ArrayList<Memory> theMemories) {
+    private void populateMemories(List<Memory> theMemories) {
         mMemories = theMemories;
         if(theMemories != null) {
             for (int i = 0; i < theMemories.size(); i++) {
