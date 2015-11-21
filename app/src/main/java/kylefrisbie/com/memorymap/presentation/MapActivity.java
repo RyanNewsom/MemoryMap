@@ -1,13 +1,15 @@
 package kylefrisbie.com.memorymap.presentation;
 
 import android.location.Location;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
 
 import java.util.ArrayList;
 
@@ -19,7 +21,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private MemoryController mController;
     private GoogleMap mMap;
+    private Location mUserLocation;
     private ArrayList<Memory> mMemories;
+    private boolean mUserLocationInitiallyFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mController = MemoryController.getInstance();
     }
 
 
@@ -44,52 +50,69 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Location myLocation;
-
         mMap = googleMap;
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.setMyLocationEnabled(true);
 
-        populateMemories();
+        setupUI();
+
+        populateMemories(mController.getMemories());
 
 //        mMap.getUiSettings().
 //        myLocation = mMap.getMyLocation();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-        mController = MemoryController.getInstance();
-
-
-
+    private void setupUI() {
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                if(location != null && !mUserLocationInitiallyFound) {
+                    mUserLocation = location;
+                    mUserLocationInitiallyFound = true;
+                    goToLocation(location);
+                }
+            }
+        });
     }
 
     private void populateMemories(ArrayList<Memory> theMemories) {
         mMemories = theMemories;
+        for(int i = 0; i < theMemories.size(); i++){
+            Memory currentMemory = theMemories.get(i);
+            addMemory(currentMemory);
+        }
 
     }
 
-    private void searchForMemory(){
-
-
+    /**
+     * This will find a memory that a user searches for, and take them to it
+     * @param searchQuery
+     */
+    private void searchForMemory(String searchQuery){
+        //find the memory
+        //pass the controller a string, get back the list
     }
 
-    private void goToMyLocation(){
-
+    /**
+     * Moves the camera to a specific location
+     * @param location - the location to go to
+     */
+    private void goToLocation(Location location){
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
-    private void expandAMemory(){
-
+    private void expandAMemory(Memory memoryClicked){
+        
     }
 
     private void getMoreInfoForMemory(){
-
+        MemoryFragment memoryFragment = new MemoryFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment);
     }
 
     private void addMemory(Memory newMemory){
-
+        //Draw the memory
     }
 
 
