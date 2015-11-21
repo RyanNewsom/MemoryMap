@@ -1,4 +1,4 @@
-package kylefrisbie.com.memorymap;
+package kylefrisbie.com.memorymap.Model;
 
 import com.orm.SugarRecord;
 
@@ -17,7 +17,6 @@ public class Memory extends SugarRecord<Memory> {
     double[] location;
 
     public Memory() {}
-
 
     public Memory(String title, Date date, ArrayList<String> people,
                   String photoURI, String description, double[] location) {

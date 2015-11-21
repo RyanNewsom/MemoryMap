@@ -2,7 +2,7 @@ package kylefrisbie.com.memorymap.controller;
 
 import java.util.ArrayList;
 
-import kylefrisbie.com.memorymap.Memory;
+import kylefrisbie.com.memorymap.Model.Memory;
 
 /**
  * Created by Ryan on 11/21/2015.
