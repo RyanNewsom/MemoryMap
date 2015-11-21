@@ -1,6 +1,7 @@
-package kylefrisbie.com.memorymap;
+package kylefrisbie.com.memorymap.presentation;
 
 import android.location.Location;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -11,6 +12,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import kylefrisbie.com.memorymap.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -39,14 +42,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Location myLocation;
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        mMap = googleMap;
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
+
+        populateMemories();
+
 //        mMap.getUiSettings().
 //        myLocation = mMap.getMyLocation();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+
+    }
+
+    private void populateMemories() {
+
+    }
+
 
 }
