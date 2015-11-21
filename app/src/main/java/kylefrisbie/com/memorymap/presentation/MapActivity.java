@@ -1,7 +1,6 @@
 package kylefrisbie.com.memorymap.presentation;
 
 import android.location.Location;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -9,9 +8,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -23,7 +20,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private MemoryController mController;
     private GoogleMap mMap;
+    private Location mUserLocation;
     private ArrayList<Memory> mMemories;
+    private boolean mUserLocationInitiallyFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +49,30 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Location myLocation;
-
         mMap = googleMap;
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.setMyLocationEnabled(true);
+
+        setupUI();
 
         populateMemories(mController.getMemories());
 
 //        mMap.getUiSettings().
 //        myLocation = mMap.getMyLocation();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
+    }
+
+    private void setupUI() {
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                if(location != null && !mUserLocationInitiallyFound) {
+                    mUserLocation = location;
+                    mUserLocationInitiallyFound = true;
+                    goToLocation(location);
+                }
+            }
+        });
     }
 
     private void populateMemories(ArrayList<Memory> theMemories) {
@@ -76,7 +89,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private void goToLocation(Location location){
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
     private void expandAMemory(Memory memoryClicked){
@@ -84,8 +97,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private void getMoreInfoForMemory(){
-        MemoryActivity memoryActivity = new MemoryActivity();
-        getSupportFragmentManager().beginTransaction().replace()
+        MemoryFragment memoryFragment = new MemoryFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment);
     }
 
     private void addMemory(Memory newMemory){
