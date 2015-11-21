@@ -9,6 +9,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import java.util.ArrayList;
@@ -49,9 +51,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Location myLocation;
         mMap = googleMap;
-
         setupUI();
 
         populateMemories(mController.getMemories());
@@ -78,9 +78,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private void populateMemories(ArrayList<Memory> theMemories) {
         mMemories = theMemories;
-        for(int i = 0; i < theMemories.size(); i++){
-            Memory currentMemory = theMemories.get(i);
-            addMemory(currentMemory);
+        if(theMemories != null) {
+            for (int i = 0; i < theMemories.size(); i++) {
+                Memory currentMemory = theMemories.get(i);
+                addMemory(currentMemory);
+            }
         }
 
     }
@@ -112,7 +114,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private void addMemory(Memory newMemory){
-        //Draw the memory
+        Location location = newMemory.getLocation();
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        mMap.addMarker(new MarkerOptions().position(latLng)
+                .title(newMemory.getTitle())
+                .snippet("" + newMemory.getDate()));
     }
 
 
