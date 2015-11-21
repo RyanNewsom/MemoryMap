@@ -1,6 +1,7 @@
 package kylefrisbie.com.memorymap.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kylefrisbie.com.memorymap.Model.Memory;
 
@@ -27,19 +28,39 @@ public class MemoryController {
     }
 
     public void createMemory(Memory newMemory){
-        //Update the model, and notify the map
+        // Create new memory
+        newMemory.save();
+
+        // Notify map here
     }
 
     public void updateMemory(Memory updatedMemory){
-        //Update the model, and notify the map
+        // Update the model
+        Memory memory = Memory.findById(Memory.class, updatedMemory.getId());
+        memory.setTitle(updatedMemory.getTitle());
+        memory.setDate(updatedMemory.getDate());
+        memory.setPeople(updatedMemory.getPeople());
+        memory.setPhotoURI(updatedMemory.getPhotoURI());
+        memory.setDescription(updatedMemory.getDescription());
+        memory.setLocation(updatedMemory.getLocation());
+        memory.save();
+        // Notify the map
     }
 
     public void deleteMemory(Memory memoryToDelete){
-        //Update the model, notify the map
+        // Update the model
+        memoryToDelete.delete();
+
+        // Notify the map
     }
 
     public ArrayList<Memory> getMemories(){
         //get the memories from the model
+        return null;
+    }
+
+    public List<Memory> findMemoryByTitle(String title) {
+        // get the memories with a given title
         return null;
     }
 }
