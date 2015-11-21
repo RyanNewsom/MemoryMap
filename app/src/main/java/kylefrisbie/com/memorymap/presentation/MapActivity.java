@@ -84,16 +84,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-    private void searchForMemory(Memory memory){
+    /**
+     * This will find a memory that a user searches for, and take them to it
+     * @param searchQuery
+     */
+    private void searchForMemory(String searchQuery){
         //find the memory
+        //pass the controller a string, get back the list
     }
 
+    /**
+     * Moves the camera to a specific location
+     * @param location - the location to go to
+     */
     private void goToLocation(Location location){
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
     private void expandAMemory(Memory memoryClicked){
-
+        
     }
 
     private void getMoreInfoForMemory(){
