@@ -13,11 +13,17 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
+import kylefrisbie.com.memorymap.Memory;
 import kylefrisbie.com.memorymap.R;
+import kylefrisbie.com.memorymap.controller.MemoryController;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private MemoryController mController;
     private GoogleMap mMap;
+    private ArrayList<Memory> mMemories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +64,35 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
+        mController = MemoryController.getInstance();
+
+
 
     }
 
-    private void populateMemories() {
+    private void populateMemories(ArrayList<Memory> theMemories) {
+        mMemories = theMemories;
+
+    }
+
+    private void searchForMemory(){
+
+
+    }
+
+    private void goToMyLocation(){
+
+    }
+
+    private void expandAMemory(){
+
+    }
+
+    private void getMoreInfoForMemory(){
+
+    }
+
+    private void addMemory(Memory newMemory){
 
     }
 
