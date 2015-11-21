@@ -49,18 +49,19 @@ public class MemoryController {
 
     public void deleteMemory(Memory memoryToDelete){
         // Update the model
-        memoryToDelete.delete();
+        Memory memory = Memory.findById(Memory.class, memoryToDelete.getId());
+        memory.delete();
 
         // Notify the map
     }
 
-    public ArrayList<Memory> getMemories(){
+    public List<Memory> getMemories(){
         //get the memories from the model
-        return null;
+        return Memory.listAll(Memory.class);
     }
 
     public List<Memory> findMemoryByTitle(String title) {
         // get the memories with a given title
-        return null;
+        return Memory.find(Memory.class, "title = ?", title);
     }
 }
