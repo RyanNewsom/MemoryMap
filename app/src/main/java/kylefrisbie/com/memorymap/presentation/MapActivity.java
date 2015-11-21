@@ -65,7 +65,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-                if(location != null && !mUserLocationInitiallyFound) {
+                if (location != null && !mUserLocationInitiallyFound) {
                     mUserLocation = location;
                     mUserLocationInitiallyFound = true;
                     goToLocation(location);
@@ -76,7 +76,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private void populateMemories(List<Memory> theMemories) {
         mMemories = theMemories;
-        if(theMemories != null) {
+        if (theMemories != null) {
             for (int i = 0; i < theMemories.size(); i++) {
                 Memory currentMemory = theMemories.get(i);
                 addMemory(currentMemory);
@@ -87,31 +87,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     /**
      * This will find a memory that a user searches for, and take them to it
+     *
      * @param searchQuery
      */
-    private void searchForMemory(String searchQuery){
+    private void searchForMemory(String searchQuery) {
         //find the memory
         //pass the controller a string, get back the list
     }
 
     /**
      * Moves the camera to a specific location
+     *
      * @param location - the location to go to
      */
-    private void goToLocation(Location location){
+    private void goToLocation(Location location) {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
-    private void expandAMemory(Memory memoryClicked){
-        
+    private void expandAMemory(Memory memoryClicked) {
+
     }
 
-    private void getMoreInfoForMemory(){
+    private void getMoreInfoForMemory() {
         MemoryFragment memoryFragment = new MemoryFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment);
     }
 
-    private void addMemory(Memory newMemory){
+    private void addMemory(Memory newMemory) {
         Location location = newMemory.getLocation();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
