@@ -63,6 +63,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private void setupUI() {
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
+
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
@@ -100,7 +101,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
      * @param location - the location to go to
      */
     private void goToLocation(Location location){
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel(), 0 , 0)));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel(), 0, 0)));
     }
 
     private void expandAMemory(Memory memoryClicked){
