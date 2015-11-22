@@ -16,7 +16,7 @@ public class MemoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mController = MemoryController.getInstance();
+        mController = MemoryController.getInstance(null);
     }
 
     @Override
