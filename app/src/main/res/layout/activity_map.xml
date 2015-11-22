@@ -60,7 +60,8 @@
             android:id="@+id/textView"
             android:hint="Search For a Memory"
             android:textSize="20sp"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:editable="true" />
 
     </RelativeLayout>
 

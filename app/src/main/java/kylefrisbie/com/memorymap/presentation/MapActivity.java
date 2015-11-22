@@ -1,8 +1,12 @@
 package kylefrisbie.com.memorymap.presentation;
 
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +30,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Location mUserLocation;
     private List<Memory> mMemories;
     private boolean mUserLocationInitiallyFound;
+
+    //Views
+    private ImageButton mAddMemoryButton;
+    private ImageButton mMyLocationButton;
 
     @Override
     public void onMemoryAdded() {
@@ -52,6 +60,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
 
         mController = MemoryController.getInstance(this);
+        mMyLocationButton = (ImageButton) findViewById(R.id.my_location_button);
+        mAddMemoryButton = (ImageButton) findViewById(R.id.add_memory_button);
+        addListeners();
+    }
+
+    private void addListeners() {
+        mMyLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToLocation(mUserLocation);
+            }
+        });
+
+        mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMemoryFragmentToAddMemory(mUserLocation);
+            }
+        });
     }
 
 
@@ -83,8 +110,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
+                mUserLocation = location;
+
                 if (location != null && !mUserLocationInitiallyFound) {
-                    mUserLocation = location;
                     mUserLocationInitiallyFound = true;
                     goToLocation(location);
                 }
@@ -139,6 +167,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
                 .snippet("" + newMemory.getDate()));
+    }
+
+    private void openMemoryFragmentToAddMemory(Location location){
+
     }
 
 
