@@ -54,9 +54,13 @@ public class MemoryController {
 
     public List<Memory> getMemories(){
         // Get the memories from the model
-        return Memory.listAll(Memory.class);
+        try {
+            return Memory.listAll(Memory.class);
 
-        // Notify map
+            // Notify map
+        } catch (NullPointerException e) {
+            return  null;
+        }
     }
 
     public List<Memory> findMemoryByTitle(String title) {
