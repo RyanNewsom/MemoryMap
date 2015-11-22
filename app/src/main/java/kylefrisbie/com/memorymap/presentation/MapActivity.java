@@ -1,10 +1,8 @@
 package kylefrisbie.com.memorymap.presentation;
 
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -19,9 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-import kylefrisbie.com.memorymap.listener.OnMemoryChangedListener;
 import kylefrisbie.com.memorymap.R;
 import kylefrisbie.com.memorymap.controller.MemoryController;
+import kylefrisbie.com.memorymap.listener.OnMemoryChangedListener;
 import kylefrisbie.com.memorymap.model.Memory;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, OnMemoryChangedListener {
