@@ -7,9 +7,6 @@ import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by kylel on 11/21/2015.
- */
 public class Memory extends SugarRecord<Memory> {
     private String title;
     private Date date;
