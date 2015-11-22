@@ -67,4 +67,9 @@ public class MemoryController {
         // get the memories with a given title
         return Memory.find(Memory.class, "title = ?", title);
     }
+
+    public Memory findMemoryByID(Long id) {
+        // get the memory with a given id
+        return Memory.findById(Memory.class, id);
+    }
 }
