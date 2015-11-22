@@ -1,13 +1,9 @@
 package kylefrisbie.com.memorymap.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.Model.Memory;
 
-/**
- * Created by Ryan on 11/21/2015.
- */
 public class MemoryController {
     private static MemoryController mInstance;
 
@@ -44,6 +40,7 @@ public class MemoryController {
         memory.setDescription(updatedMemory.getDescription());
         memory.setLocation(updatedMemory.getLocation());
         memory.save();
+
         // Notify the map
     }
 
@@ -56,12 +53,20 @@ public class MemoryController {
     }
 
     public List<Memory> getMemories(){
-        //get the memories from the model
-        return Memory.listAll(Memory.class);
+        // Get the memories from the model
+        try {
+            return Memory.listAll(Memory.class);
+
+            // Notify map
+        } catch (NullPointerException e) {
+            return  null;
+        }
     }
 
     public List<Memory> findMemoryByTitle(String title) {
         // get the memories with a given title
         return Memory.find(Memory.class, "title = ?", title);
+
+        // Notify the map
     }
 }
