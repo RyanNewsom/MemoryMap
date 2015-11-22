@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import kylefrisbie.com.memorymap.controller.MemoryController;
+import kylefrisbie.com.memorymap.model.Memory;
 
 public class MemoryFragment extends Fragment {
     MemoryController mController;
