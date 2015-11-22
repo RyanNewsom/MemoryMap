@@ -19,7 +19,7 @@
         android:layout_above="@+id/my_location_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/addMemory"
+        android:src="@drawable/add_memory"
         android:background="#00ffffff" />
 
     <ImageButton
@@ -29,7 +29,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/mylocationicon"
+        android:src="@drawable/my_location_icon"
         android:background="#00ffffff" />
 
 </RelativeLayout>
