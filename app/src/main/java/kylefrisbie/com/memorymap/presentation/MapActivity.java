@@ -15,9 +15,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.listener.OnMemoryChangedListener;
-import kylefrisbie.com.memorymap.model.Memory;
 import kylefrisbie.com.memorymap.R;
 import kylefrisbie.com.memorymap.controller.MemoryController;
+import kylefrisbie.com.memorymap.model.Memory;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, OnMemoryChangedListener {
 
@@ -51,7 +51,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mController = MemoryController.getInstance();
+        mController = MemoryController.getInstance(this);
     }
 
 

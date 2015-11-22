@@ -7,7 +7,7 @@ import kylefrisbie.com.memorymap.model.Memory;
 
 public class MemoryController {
     private static MemoryController mInstance;
-    private OnMemoryChangedListener mMemoryChanged;
+    private static OnMemoryChangedListener mMemoryChanged;
     /**
      * Private constructor so that you can not create an object of this type
      */
@@ -17,9 +17,10 @@ public class MemoryController {
      * Gets an instance of the memory controller
      * @return - the instance
      */
-    public static MemoryController getInstance(){
+    public static MemoryController getInstance(OnMemoryChangedListener callback){
         if(mInstance == null){
             mInstance = new MemoryController();
+            mMemoryChanged = callback;
         }
         return mInstance;
     }
