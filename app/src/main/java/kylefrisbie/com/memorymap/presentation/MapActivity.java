@@ -14,17 +14,33 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-import kylefrisbie.com.memorymap.Model.Memory;
+import kylefrisbie.com.memorymap.listener.OnMemoryChangedListener;
+import kylefrisbie.com.memorymap.model.Memory;
 import kylefrisbie.com.memorymap.R;
 import kylefrisbie.com.memorymap.controller.MemoryController;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, OnMemoryChangedListener {
 
     private MemoryController mController;
     private GoogleMap mMap;
     private Location mUserLocation;
     private List<Memory> mMemories;
     private boolean mUserLocationInitiallyFound;
+
+    @Override
+    public void onMemoryAdded() {
+
+    }
+
+    @Override
+    public void onMemoryUpdated() {
+
+    }
+
+    @Override
+    public void onMemoryRemoved() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
