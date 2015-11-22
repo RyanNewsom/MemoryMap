@@ -181,7 +181,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         bundle.putLong(MEMORY_ID, memory.getId());
         MemoryFragment memoryFragment = new MemoryFragment();
         memoryFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment).commit();
     }
 
     private void openMemoryFragment(Location location){
@@ -192,7 +192,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         bundle.putDoubleArray(LATLNGARRAY, array);
         MemoryFragment memoryFragment = new MemoryFragment();
         memoryFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment).commit();
     }
 
     private void addMemory(Memory newMemory) {
