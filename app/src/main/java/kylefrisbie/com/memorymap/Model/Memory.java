@@ -1,4 +1,4 @@
-package kylefrisbie.com.memorymap.Model;
+package kylefrisbie.com.memorymap.model;
 
 import android.location.Location;
 
