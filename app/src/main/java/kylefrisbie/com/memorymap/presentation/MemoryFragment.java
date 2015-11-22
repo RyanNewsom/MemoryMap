@@ -6,9 +6,6 @@ import android.support.v4.app.Fragment;
 
 import kylefrisbie.com.memorymap.controller.MemoryController;
 
-/**
- * Created by Ryan on 11/21/2015.
- */
 public class MemoryFragment extends Fragment {
     MemoryController mController;
 
