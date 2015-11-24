@@ -1,14 +1,15 @@
 package kylefrisbie.com.memorymap.presentation;
 
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Date;
@@ -21,23 +22,58 @@ public class MemoryFragment extends Fragment {
     MemoryController mController;
     private long mMemoryID;
     private Memory mMemory;
-    private EditText memoryTitle;
-    private CalendarView memoryDate;
-    private EditText peopleList;
-    private EditText memoryDescription;
+    private EditText mMemoryTitle;
+    private EditText mMemoryPlace;
+    private CalendarView mMemoryDate;
+    private EditText mPeopleList;
+    private EditText mMemoryDescription;
+    private Button mSaveButton;
+    private Button mCancelButton;
+    private Location mMemoryLocation;
 
     private void populateMemory() {
-        memoryTitle.setText(mMemory.getTitle());
-        memoryDate.setDate(mMemory.getDate().getDate());
-        peopleList.setText(mMemory.getPeople().toString());
-        memoryDescription.setText(mMemory.getDescription());
+        mMemoryTitle.setText(mMemory.getTitle());
+        mMemoryPlace.setText(mMemory.getPlaceName());
+        mMemoryDate.setDate(mMemory.getDate().getDate());
+        mPeopleList.setText(mMemory.getPeople().toString());
+        mMemoryDescription.setText(mMemory.getDescription());
     }
 
-    private void linkUpTextFields() {
-        memoryTitle = (EditText) getView().findViewById(R.id.titleEditText);
-        memoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
-        peopleList = (EditText) getView().findViewById(R.id.peopleEditText);
-        memoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
+    private void linkUpViewItems() {
+        mMemoryTitle = (EditText) getView().findViewById(R.id.titleEditText);
+        mMemoryPlace = (EditText) getView().findViewById(R.id.placeEditText);
+        mMemoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
+        mPeopleList = (EditText) getView().findViewById(R.id.peopleEditText);
+        mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
+        mSaveButton = (Button) getView().findViewById(R.id.saveButton);
+        mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
+    }
+
+    public void addListeners() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Memory memory = new Memory();
+                memory.setTitle(mMemoryTitle.getText().toString());
+                memory.setPlaceName(mMemoryPlace.getText().toString());
+                memory.setDate(new Date(mMemoryDate.getDate()));
+                memory.setPeople(mPeopleList.getText().toString());
+                memory.setDescription(mMemoryDescription.getText().toString());
+                memory.setLocation(mMemoryLocation);
+
+                mController.createMemory(memory);
+
+                // use interface to notify MapActivity
+                mController.createMemory(memory);
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     public MemoryFragment() {
@@ -49,6 +85,10 @@ public class MemoryFragment extends Fragment {
         mController = MemoryController.getInstance(null);
         Bundle bundle = getArguments();
         mMemoryID = bundle.getLong(MapActivity.MEMORY_ID);
+        double[] latlng = bundle.getDoubleArray(MapActivity.LATLNGARRAY);
+        mMemoryLocation = new Location("MemoryLocation");
+        mMemoryLocation.setLatitude(latlng[0]);
+        mMemoryLocation.setLongitude(latlng[1]);
     }
 
     @Override
@@ -60,10 +100,12 @@ public class MemoryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        linkUpTextFields();
+        linkUpViewItems();
+        addListeners();
 
         if (mMemoryID != -1) {
             mMemory = mController.findMemoryByID(mMemoryID);
+            mMemoryLocation = mMemory.getLocation();
             populateMemory();
         }
     }

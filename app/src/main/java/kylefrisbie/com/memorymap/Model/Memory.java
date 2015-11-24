@@ -10,7 +10,7 @@ import java.util.Date;
 public class Memory extends SugarRecord<Memory> {
     private String title;
     private Date date;
-    private ArrayList<String> people;
+    private String people;
     private String photoURI;
     private String description;
     private Location location;
@@ -18,7 +18,7 @@ public class Memory extends SugarRecord<Memory> {
 
     public Memory() {}
 
-    public Memory(String title, Date date, ArrayList<String> people, String photoURI, String description, Location location, String placeName) {
+    public Memory(String title, Date date, String people, String photoURI, String description, Location location, String placeName) {
         this.title = title;
         this.date = date;
         this.people = people;
@@ -44,11 +44,11 @@ public class Memory extends SugarRecord<Memory> {
         this.date = date;
     }
 
-    public ArrayList<String> getPeople() {
+    public String getPeople() {
         return people;
     }
 
-    public void setPeople(ArrayList<String> people) {
+    public void setPeople(String people) {
         this.people = people;
     }
 
