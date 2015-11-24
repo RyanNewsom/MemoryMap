@@ -58,7 +58,6 @@ public class MemoryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         linkUpTextFields();
-
         long memoryID = savedInstanceState.getLong(MapActivity.MEMORY_ID);
         if (memoryID != -1) {
             mMemory = mController.findMemoryByID(memoryID);
