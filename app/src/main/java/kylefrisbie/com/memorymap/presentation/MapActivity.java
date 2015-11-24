@@ -40,17 +40,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ImageButton mMyLocationButton;
 
     @Override
-    public void onMemoryAdded() {
-
+    public void onMemoryAdded(Memory memory) {
+        addMemory(memory);
     }
 
     @Override
-    public void onMemoryUpdated() {
+    public void onMemoryUpdated(Memory memory) {
         //Find the memory in the array list, and update the information
     }
 
     @Override
-    public void onMemoryRemoved() {
+    public void onMemoryRemoved(Memory memory) {
         //Find the memory in the array list, remove it, then remove it from the list of markers, and remove
         //that specific marker
     }

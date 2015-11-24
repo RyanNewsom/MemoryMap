@@ -29,7 +29,7 @@ public class MemoryController {
         // Create new memory
         newMemory.save();
         // Notify map here
-        mMemoryChanged.onMemoryAdded();
+        mMemoryChanged.onMemoryAdded(newMemory);
     }
 
     public void updateMemory(Memory updatedMemory){
@@ -44,7 +44,7 @@ public class MemoryController {
         memory.setPlaceName(updatedMemory.getPlaceName());
         memory.save();
         // Notify the map
-        mMemoryChanged.onMemoryUpdated();
+        mMemoryChanged.onMemoryUpdated(memory);
     }
 
     public void deleteMemory(Memory memoryToDelete){
@@ -52,7 +52,7 @@ public class MemoryController {
         Memory memory = Memory.findById(Memory.class, memoryToDelete.getId());
         memory.delete();
         // Notify the map
-        mMemoryChanged.onMemoryRemoved();
+        mMemoryChanged.onMemoryRemoved(memory);
     }
 
     public List<Memory> getMemories(){

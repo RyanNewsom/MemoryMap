@@ -65,6 +65,8 @@ public class MemoryFragment extends Fragment {
 
                 // use interface to notify MapActivity
                 mController.createMemory(memory);
+
+                getActivity().getSupportFragmentManager().popBackStack()
             }
         });
 

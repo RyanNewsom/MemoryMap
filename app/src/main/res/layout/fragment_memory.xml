@@ -35,7 +35,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/placeEditText"
-            android:layout_alignEnd="@+id/placeEditText" />
+            android:layout_alignEnd="@+id/placeEditText"
+            android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +57,8 @@
             android:layout_below="@+id/placeTextView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:allowUndo="false" />
+            android:allowUndo="false"
+            android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +78,8 @@
             android:id="@+id/peopleEditText"
             android:layout_below="@+id/peopleTextView"
             android:layout_alignLeft="@+id/peopleTextView"
-            android:layout_alignStart="@+id/peopleTextView" />
+            android:layout_alignStart="@+id/peopleTextView"
+            android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,7 +99,8 @@
             android:id="@+id/memoryEditText"
             android:layout_below="@+id/memoryTextView"
             android:layout_alignLeft="@+id/memoryTextView"
-            android:layout_alignStart="@+id/memoryTextView" />
+            android:layout_alignStart="@+id/memoryTextView"
+            android:singleLine="true" />
 
         <Button
             android:layout_width="wrap_content"
