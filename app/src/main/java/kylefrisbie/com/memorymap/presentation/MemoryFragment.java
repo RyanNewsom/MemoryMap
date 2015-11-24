@@ -61,7 +61,6 @@ public class MemoryFragment extends Fragment {
                 memory.setDescription(mMemoryDescription.getText().toString());
                 memory.setLatitude(mMemoryLocation.getLatitude());
                 memory.setLongitude(mMemoryLocation.getLongitude());
-
                 mController.createMemory(memory);
 
                 // use interface to notify MapActivity
