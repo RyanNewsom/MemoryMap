@@ -37,43 +37,50 @@
         android:paddingBottom="16dp" />
 
 
-
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/bright_foreground_material_dark"
-        android:theme="@style/Base.AlertDialog.AppCompat.Light"
-        android:shadowColor="#000"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="50"
         android:layout_margin="16dp"
-        android:layout_alignParentEnd="false">
+        android:padding="1dp"
+        android:background="#aaaaaa">
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/hamburger_icon"
-            android:layout_toRightOf="@+id/textView"
-            android:background="#00ffffff"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/bright_foreground_material_dark"
+            android:theme="@style/Base.AlertDialog.AppCompat.Light"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="50"
+            android:layout_alignParentEnd="false">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:hint="Search For a Memory"
-            android:textSize="20sp"
-            android:layout_centerInParent="true"
-            android:editable="true"
-            android:singleLine="true"
-            android:theme="@style/Base.ThemeOverlay.AppCompat" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/hamburger_icon"
+                android:layout_toRightOf="@+id/textView"
+                android:background="#00ffffff"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp" />
 
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:hint="Search For a Memory"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"
+                android:editable="true"
+                android:singleLine="true"
+                android:theme="@style/myEditText"
+                android:textColorHighlight="#0074e0" />
+
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
