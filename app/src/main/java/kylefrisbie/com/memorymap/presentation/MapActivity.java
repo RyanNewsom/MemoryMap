@@ -42,6 +42,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMemoryAdded(Memory memory) {
         addMemory(memory);
+        mMemories.add(memory);
     }
 
     @Override
