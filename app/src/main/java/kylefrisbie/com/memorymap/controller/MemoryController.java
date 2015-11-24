@@ -58,7 +58,7 @@ public class MemoryController {
         // Get the memories from the model
         try {
             return Memory.listAll(Memory.class);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return  null;
         }
     }

@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -90,8 +91,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //drop a marker
-
                 openMemoryFragment(mUserLocation);
             }
         });
@@ -127,8 +126,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setupUI();
-
-
         populateMemories(mController.getMemories());
     }
 
@@ -140,6 +137,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private void populateMemories(List<Memory> theMemories) {
         mMemories = theMemories;
+        mMarkers = new ArrayList<>();
         if (theMemories != null) {
             for (int i = 0; i < theMemories.size(); i++) {
                 Memory currentMemory = theMemories.get(i);
@@ -157,20 +155,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void searchForMemory(String searchQuery) {
         //find the memory
         //pass the controller a string, get back the list
-    }
-
-    /**
-     * Moves the camera to a specific location
-     *
-     * @param location - the location to go to
-     */
-
-    private void goToLocation(Location location){
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
-    }
-
-    private void expandAMemory(Memory memoryClicked) {
-
     }
 
     /**
@@ -212,5 +196,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .snippet("" + newMemory.getDate()));
 
         mMarkers.add(newMarker);
+    }
+
+    /**
+     * Moves the camera to a specific location
+     *
+     * @param location - the location to go to
+     */
+
+    private void goToLocation(Location location){
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
     }
 }
