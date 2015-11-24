@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -21,21 +22,20 @@ public class MemoryFragment extends Fragment {
     private long mMemoryID;
     private Memory mMemory;
     private EditText memoryTitle;
-    private DatePicker memoryDate;
+    private CalendarView memoryDate;
     private EditText peopleList;
     private EditText memoryDescription;
 
     private void populateMemory() {
         memoryTitle.setText(mMemory.getTitle());
-        Date date = mMemory.getDate();
-        memoryDate.init(date.getYear(), date.getMonth(), date.getDay(), null);
+        memoryDate.setDate(mMemory.getDate().getDate());
         peopleList.setText(mMemory.getPeople().toString());
         memoryDescription.setText(mMemory.getDescription());
     }
 
     private void linkUpTextFields() {
         memoryTitle = (EditText) getView().findViewById(R.id.titleEditText);
-        memoryDate = (DatePicker) getView().findViewById(R.id.datePicker);
+        memoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
         peopleList = (EditText) getView().findViewById(R.id.peopleEditText);
         memoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
     }
@@ -61,7 +61,7 @@ public class MemoryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         linkUpTextFields();
-        
+
         if (mMemoryID != -1) {
             mMemory = mController.findMemoryByID(mMemoryID);
             populateMemory();
