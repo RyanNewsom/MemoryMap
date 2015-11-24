@@ -35,7 +35,7 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/add_memory_icon"
         android:background="#00ffffff"
-        android:paddingRight="16dp"
+        android:paddingRight="18dp"
         android:paddingBottom="16dp" />
 
 
