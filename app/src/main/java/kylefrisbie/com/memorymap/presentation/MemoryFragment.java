@@ -59,7 +59,7 @@ public class MemoryFragment extends Fragment {
                 memory.setDate(new Date(mMemoryDate.getDate()));
                 memory.setPeople(mPeopleList.getText().toString());
                 memory.setDescription(mMemoryDescription.getText().toString());
-                memory.setLocation(mMemoryLocation);
+                memory.setLocation(new Location(mMemoryLocation));
 
                 mController.createMemory(memory);
 
