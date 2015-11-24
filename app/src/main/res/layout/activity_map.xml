@@ -42,9 +42,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:padding="1dp"
-        android:background="@drawable/rounded_corner">
+        android:layout_margin="16dp">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -56,8 +54,7 @@
             android:shadowColor="#000"
             android:shadowDx="0"
             android:shadowDy="0"
-            android:shadowRadius="50"
-            android:layout_alignParentEnd="false">
+            android:shadowRadius="50">
 
             <ImageButton
                 android:layout_width="wrap_content"
