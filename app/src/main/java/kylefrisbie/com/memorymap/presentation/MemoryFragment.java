@@ -61,7 +61,7 @@ public class MemoryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         linkUpTextFields();
-
+        
         if (mMemoryID != -1) {
             mMemory = mController.findMemoryByID(mMemoryID);
             populateMemory();
