@@ -86,11 +86,19 @@ public class MemoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mController = MemoryController.getInstance(null);
         Bundle bundle = getArguments();
+
         mMemoryID = bundle.getLong(MapActivity.MEMORY_ID);
-        double[] latlng = bundle.getDoubleArray(MapActivity.LATLNGARRAY);
         mMemoryLocation = new Location("MemoryLocation");
-        mMemoryLocation.setLatitude(latlng[0]);
-        mMemoryLocation.setLongitude(latlng[1]);
+
+        if (mMemoryID != -1) {
+            mMemory = mController.findMemoryByID(mMemoryID);
+            mMemoryLocation.setLatitude(mMemory.getLatitude());
+            mMemoryLocation.setLongitude(mMemory.getLongitude());
+        } else {
+            double[] latlng = bundle.getDoubleArray(MapActivity.LATLNGARRAY);
+            mMemoryLocation.setLatitude(latlng[0]);
+            mMemoryLocation.setLongitude(latlng[1]);
+        }
     }
 
     @Override
@@ -106,9 +114,6 @@ public class MemoryFragment extends Fragment {
         addListeners();
 
         if (mMemoryID != -1) {
-            mMemory = mController.findMemoryByID(mMemoryID);
-            mMemoryLocation.setLatitude(mMemory.getLatitude());
-            mMemoryLocation.setLongitude(mMemory.getLongitude());
             populateMemory();
         }
     }
