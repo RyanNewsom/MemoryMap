@@ -59,7 +59,8 @@ public class MemoryFragment extends Fragment {
                 memory.setDate(new Date(mMemoryDate.getDate()));
                 memory.setPeople(mPeopleList.getText().toString());
                 memory.setDescription(mMemoryDescription.getText().toString());
-                memory.setLocation(mMemoryLocation);
+                memory.setLatitude(mMemoryLocation.getLatitude());
+                memory.setLongitude(mMemoryLocation.getLongitude());
 
                 mController.createMemory(memory);
 
@@ -107,7 +108,8 @@ public class MemoryFragment extends Fragment {
 
         if (mMemoryID != -1) {
             mMemory = mController.findMemoryByID(mMemoryID);
-            mMemoryLocation = mMemory.getLocation();
+            mMemoryLocation.setLatitude(mMemory.getLatitude());
+            mMemoryLocation.setLongitude(mMemory.getLongitude());
             populateMemory();
         }
     }

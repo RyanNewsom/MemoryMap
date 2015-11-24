@@ -40,7 +40,8 @@ public class MemoryController {
         memory.setPeople(updatedMemory.getPeople());
         memory.setPhotoURI(updatedMemory.getPhotoURI());
         memory.setDescription(updatedMemory.getDescription());
-        memory.setLocation(updatedMemory.getLocation());
+        memory.setLatitude(updatedMemory.getLatitude());
+        memory.setLongitude(updatedMemory.getLongitude());
         memory.setPlaceName(updatedMemory.getPlaceName());
         memory.save();
         // Notify the map
