@@ -189,6 +189,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         double[] array = new double[2];
         array[0] = location.getLatitude();
         array[1] = location.getLongitude();
+        bundle.putLong(MEMORY_ID, -1);
         bundle.putDoubleArray(LATLNGARRAY, array);
         MemoryFragment memoryFragment = new MemoryFragment();
         memoryFragment.setArguments(bundle);

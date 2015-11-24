@@ -14,17 +14,18 @@ public class Memory extends SugarRecord<Memory> {
     private String photoURI;
     private String description;
     private Location location;
+    private String placeName;
 
     public Memory() {}
 
-    public Memory(String title, Date date, ArrayList<String> people,
-                  String photoURI, String description, Location location) {
+    public Memory(String title, Date date, ArrayList<String> people, String photoURI, String description, Location location, String placeName) {
         this.title = title;
         this.date = date;
         this.people = people;
         this.photoURI = photoURI;
         this.description = description;
         this.location = location;
+        this.placeName = placeName;
     }
 
     public String getTitle() {
@@ -73,5 +74,13 @@ public class Memory extends SugarRecord<Memory> {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 }

@@ -41,6 +41,7 @@ public class MemoryController {
         memory.setPhotoURI(updatedMemory.getPhotoURI());
         memory.setDescription(updatedMemory.getDescription());
         memory.setLocation(updatedMemory.getLocation());
+        memory.setPlaceName(updatedMemory.getPlaceName());
         memory.save();
         // Notify the map
         mMemoryChanged.onMemoryUpdated();
