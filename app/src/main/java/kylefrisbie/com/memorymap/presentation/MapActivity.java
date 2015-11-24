@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -31,6 +32,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Location mUserLocation;
     private List<Memory> mMemories;
+    private List<Marker> mMarkers;
     private boolean mUserLocationInitiallyFound;
 
     //Views
@@ -78,6 +80,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             }
         });
+
         mMyLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,55 +97,47 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-//                for (int i = ; i < mMemories.size(); i++) {
-//
-//                }
                 return true;
             }
         });
 
+        /**
+         * Finds where the marker the user clicked can be found in the markers list, then compares it with the markers in the
+         * marker array list,
+         */
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-
+                int positionOfMemory = 0;
+                for(int i = 0; i < mMarkers.size(); i++){
+                    Marker currentMarker = mMarkers.get(i);
+                    if(marker.getId() == currentMarker.getId()){
+                        positionOfMemory = i;
+                        break;
+                    }
+                }
+                Memory theMemory = mMemories.get(positionOfMemory);
+                openMemoryFragment(theMemory);
             }
         });
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setupUI();
-
-
         populateMemories(mController.getMemories());
-
-//        mMap.getUiSettings().
-//        myLocation = mMap.getMyLocation();
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
     }
 
     private void setupUI() {
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
-
-
         addListeners();
-
     }
 
     private void populateMemories(List<Memory> theMemories) {
         mMemories = theMemories;
+        mMarkers = new ArrayList<>();
         if (theMemories != null) {
             for (int i = 0; i < theMemories.size(); i++) {
                 Memory currentMemory = theMemories.get(i);
@@ -163,19 +158,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     /**
-     * Moves the camera to a specific location
-     *
-     * @param location - the location to go to
+     * Viewing/editing a memory
+     * @param memory
      */
-
-    private void goToLocation(Location location){
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
-    }
-
-    private void expandAMemory(Memory memoryClicked) {
-
-    }
-
     private void openMemoryFragment(Memory memory) {
         Bundle bundle = new Bundle();
         bundle.putLong(MEMORY_ID, memory.getId());
@@ -184,6 +169,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment).commit();
     }
 
+    /**
+     * Adding new memory
+     * @param location
+     */
     private void openMemoryFragment(Location location){
         Bundle bundle = new Bundle();
         double[] array = new double[2];
@@ -196,15 +185,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         getSupportFragmentManager().beginTransaction().replace(R.id.map, memoryFragment).commit();
     }
 
+    /**
+     * Adds a memory to the map, also records the memories marker for future reference
+     * @param newMemory
+     */
     private void addMemory(Memory newMemory) {
         Location location = newMemory.getLocation();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        mMap.addMarker(new MarkerOptions().position(latLng)
+        Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
                 .snippet("" + newMemory.getDate()));
+
+        mMarkers.add(newMarker);
     }
 
+    /**
+     * Moves the camera to a specific location
+     *
+     * @param location - the location to go to
+     */
 
-
+    private void goToLocation(Location location){
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
+    }
 }
