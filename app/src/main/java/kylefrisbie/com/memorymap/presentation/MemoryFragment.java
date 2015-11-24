@@ -18,6 +18,7 @@ import kylefrisbie.com.memorymap.model.Memory;
 
 public class MemoryFragment extends Fragment {
     MemoryController mController;
+    private long mMemoryID;
     private Memory mMemory;
     private EditText memoryTitle;
     private DatePicker memoryDate;
@@ -46,6 +47,8 @@ public class MemoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mController = MemoryController.getInstance(null);
+        Bundle bundle = getArguments();
+        mMemoryID = bundle.getLong(MapActivity.MEMORY_ID);
     }
 
     @Override
@@ -59,9 +62,8 @@ public class MemoryFragment extends Fragment {
 
         linkUpTextFields();
 
-        long memoryID = savedInstanceState.getLong(MapActivity.MEMORY_ID);
-        if (memoryID != -1) {
-            mMemory = mController.findMemoryByID(memoryID);
+        if (mMemoryID != -1) {
+            mMemory = mController.findMemoryByID(mMemoryID);
             populateMemory();
         }
     }
