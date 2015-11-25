@@ -22,6 +22,7 @@ import kylefrisbie.com.memorymap.model.Memory;
 public class MemoryFragment extends Fragment {
     MemoryController mController;
     private long mMemoryID;
+    private String mMemoryMarkerID;
     private Memory mMemory;
     private EditText mMemoryTitle;
     private EditText mMemoryPlace;
@@ -30,6 +31,7 @@ public class MemoryFragment extends Fragment {
     private EditText mMemoryDescription;
     private Button mSaveButton;
     private Button mCancelButton;
+    private Button mDeleteButton;
     private Location mMemoryLocation;
 
     private void populateMemory() {
@@ -48,6 +50,8 @@ public class MemoryFragment extends Fragment {
         mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
         mSaveButton = (Button) getView().findViewById(R.id.saveButton);
         mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
+        mDeleteButton = (Button) getView().findViewById(R.id.deleteButton);
+        mDeleteButton.setVisibility(View.INVISIBLE);
     }
 
     private Calendar generateMemoryDate() {
@@ -108,7 +112,6 @@ public class MemoryFragment extends Fragment {
                 memory.setDescription(mMemoryDescription.getText().toString());
                 memory.setLatitude(mMemoryLocation.getLatitude());
                 memory.setLongitude(mMemoryLocation.getLongitude());
-                mController.createMemory(memory);
 
                 // use interface to notify MapActivity
                 mController.createMemory(memory);
@@ -120,6 +123,14 @@ public class MemoryFragment extends Fragment {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mController.deleteMemory(mMemory, mMemoryMarkerID);
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -138,6 +149,7 @@ public class MemoryFragment extends Fragment {
         mMemoryLocation = new Location("MemoryLocation");
 
         if (mMemoryID != -1) {
+            mMemoryMarkerID = bundle.getString(MapActivity.MARKER_ID);
             mMemory = mController.findMemoryByID(mMemoryID);
             mMemoryLocation.setLatitude(mMemory.getLatitude());
             mMemoryLocation.setLongitude(mMemory.getLongitude());
@@ -161,6 +173,7 @@ public class MemoryFragment extends Fragment {
         addListeners();
 
         if (mMemoryID != -1) {
+            mDeleteButton.setVisibility(View.VISIBLE);
             populateMemory();
         }
     }
