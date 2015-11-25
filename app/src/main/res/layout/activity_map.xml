@@ -78,7 +78,7 @@
                 android:singleLine="true"
                 android:theme="@style/myEditText"
                 android:textColorHighlight="#0074e0"
-
+                android:ems="10"
                 />
 
         </RelativeLayout>

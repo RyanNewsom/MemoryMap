@@ -72,8 +72,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         mController = MemoryController.getInstance(this);
         mSearchView = (AutoCompleteTextView) findViewById(R.id.auto_complete_search);
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, new ArrayList<Memory>());
-        mSearchView.setAdapter(mCustomAdapter);
         mMyLocationButton = (ImageButton) findViewById(R.id.my_location_button);
         mAddMemoryButton = (ImageButton) findViewById(R.id.add_memory_button);
     }
@@ -152,7 +150,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
         setupUI();
         populateMemories(mController.getMemories());
-
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchView.setAdapter(mCustomAdapter);
     }
 
     private void setupUI() {
@@ -168,7 +167,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             for (int i = 0; i < theMemories.size(); i++) {
                 Memory currentMemory = theMemories.get(i);
                 addMemory(currentMemory);
-                mCustomAdapter.add(currentMemory);
             }
         }
 
@@ -218,6 +216,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
      * @param newMemory
      */
     private void addMemory(Memory newMemory) {
+        if(mCustomAdapter != null) {
+            mCustomAdapter.add(newMemory);
+        }
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
