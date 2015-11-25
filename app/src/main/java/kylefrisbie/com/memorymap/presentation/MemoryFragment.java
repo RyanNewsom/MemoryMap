@@ -29,6 +29,7 @@ public class MemoryFragment extends Fragment {
     private CalendarView mMemoryDate;
     private EditText mPeopleList;
     private EditText mMemoryDescription;
+    private Button mCameraButton;
     private Button mSaveButton;
     private Button mCancelButton;
     private Button mDeleteButton;
@@ -47,6 +48,7 @@ public class MemoryFragment extends Fragment {
         mMemoryPlace = (EditText) getView().findViewById(R.id.placeEditText);
         mMemoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
         mPeopleList = (EditText) getView().findViewById(R.id.peopleEditText);
+        mCameraButton = (Button) getView().findViewById(R.id.cameraButton);
         mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
         mSaveButton = (Button) getView().findViewById(R.id.saveButton);
         mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
@@ -99,6 +101,13 @@ public class MemoryFragment extends Fragment {
     }
 
     public void addListeners() {
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

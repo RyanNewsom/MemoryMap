@@ -1,12 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.MemoryFragment"
-    android:padding="16dp"
     android:background="#ffffff"
     android:clickable="false"
     android:focusable="false">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    tools:context="layout.MemoryFragment"
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -129,6 +134,15 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera"
+            android:id="@+id/cameraButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
 
     <CalendarView
@@ -149,5 +163,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
 </RelativeLayout>
+
+</FrameLayout>
