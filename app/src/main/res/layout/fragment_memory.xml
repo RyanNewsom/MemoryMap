@@ -107,6 +107,15 @@
             android:layout_alignStart="@+id/memoryTextView"
             android:singleLine="true" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:contentDescription="@string/memoryImage"
+            android:layout_below="@+id/memoryEditText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,18 +160,21 @@
         android:id="@+id/calendarView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/relativeLayout" />
+        android:layout_alignParentStart="false"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignStart="@+id/imageView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Date"
+        android:text="@string/Date"
         android:id="@+id/dateText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/calendarView" />
+
 </RelativeLayout>
 
 </FrameLayout>
