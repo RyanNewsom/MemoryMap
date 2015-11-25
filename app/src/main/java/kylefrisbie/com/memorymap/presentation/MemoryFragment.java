@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import kylefrisbie.com.memorymap.R;
@@ -34,7 +35,7 @@ public class MemoryFragment extends Fragment {
     private void populateMemory() {
         mMemoryTitle.setText(mMemory.getTitle());
         mMemoryPlace.setText(mMemory.getPlaceName());
-        mMemoryDate.setDate(mMemory.getDate().getDate());
+        mMemoryDate.setDate(mMemory.getDate().getTimeInMillis());
         mPeopleList.setText(mMemory.getPeople().toString());
         mMemoryDescription.setText(mMemory.getDescription());
     }
@@ -49,6 +50,50 @@ public class MemoryFragment extends Fragment {
         mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
     }
 
+    private Calendar generateMemoryDate() {
+        return new Calendar() {
+            @Override
+            public void add(int field, int value) {
+
+            }
+
+            @Override
+            protected void computeFields() {
+
+            }
+
+            @Override
+            protected void computeTime() {
+
+            }
+
+            @Override
+            public int getGreatestMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getLeastMaximum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getMaximum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public void roll(int field, boolean increment) {
+
+            }
+        };
+    }
+
     public void addListeners() {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +101,9 @@ public class MemoryFragment extends Fragment {
                 Memory memory = new Memory();
                 memory.setTitle(mMemoryTitle.getText().toString());
                 memory.setPlaceName(mMemoryPlace.getText().toString());
-                memory.setDate(new Date(mMemoryDate.getDate()));
+                Calendar date = generateMemoryDate();
+                date.setTimeInMillis(mMemoryDate.getDate());
+                memory.setDate(date);
                 memory.setPeople(mPeopleList.getText().toString());
                 memory.setDescription(mMemoryDescription.getText().toString());
                 memory.setLatitude(mMemoryLocation.getLatitude());

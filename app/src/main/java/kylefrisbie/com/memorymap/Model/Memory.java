@@ -5,11 +5,12 @@ import android.location.Location;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Memory extends SugarRecord<Memory> {
     private String title;
-    private Date date;
+    private Calendar date;
     private String people;
     private String photoURI;
     private String description;
@@ -19,7 +20,7 @@ public class Memory extends SugarRecord<Memory> {
 
     public Memory() {}
 
-    public Memory(String title, Date date, String people, String photoURI, String description, double latitude, double longitude, String placeName) {
+    public Memory(String title, Calendar date, String people, String photoURI, String description, double latitude, double longitude, String placeName) {
         this.title = title;
         this.date = date;
         this.people = people;
@@ -38,11 +39,11 @@ public class Memory extends SugarRecord<Memory> {
         this.title = title;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 

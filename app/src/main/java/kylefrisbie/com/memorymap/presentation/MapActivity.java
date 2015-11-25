@@ -195,7 +195,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
-                .snippet("" + newMemory.getDate()));
+                .snippet("" + newMemory.getDate().getTime()));
 
         mMarkers.add(newMarker);
     }
