@@ -141,6 +141,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                Memory newMemory = new Memory(null, null, null, null, null, latLng.latitude, latLng.longitude, null);
+                mController.createMemory(newMemory);
+
+            }
+        });
+
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,6 +245,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
      * @param newMemory
      */
     private void addMemory(Memory newMemory) {
+        Marker newMarker;
         if(mCustomAdapter != null) {
             mCustomAdapter.add(newMemory);
         }
@@ -243,9 +253,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
 
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
-        Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
-                .title(newMemory.getTitle())
-                .snippet("" + theDate));
+        if(newMemory.getTitle() == null){
+            newMemory.setTitle("Add a title");
+        }
+        if(newMemory.getDate() == null){
+            newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                    .title(newMemory.getTitle())
+                    .snippet("Add a date"));
+        } else {
+            newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                    .title(newMemory.getTitle())
+                    .snippet("" + theDate));
+        }
 
         mMarkers.add(newMarker);
     }
