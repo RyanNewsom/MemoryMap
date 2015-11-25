@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content" android:orientation="vertical"
     android:layout_width="fill_parent">
-
-    <TableRow android:layout_width="fill_parent"
-        android:id="@+id/TableRow01"
-        android:layout_height="wrap_content">
-
-        <TextView android:textColor="#FFFFFF"
+    <TextView android:textColor="#000000"
             android:id="@+id/thetitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="id" android:textStyle="bold"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:typeface="monospace"
-            android:height="20sp" />
-    </TableRow>
+            android:textStyle="bold"
+            android:height="20sp"
+            android:text="hello" />
 
-    <TableRow android:layout_height="wrap_content"
-        android:layout_width="fill_parent">
 
-        <TextView android:textColor="#FFFFFF"
+        <TextView android:textColor="#000000"
             android:id="@+id/date"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="categoryId"
-            android:layout_weight="1"
-            android:height="20sp" />
+            android:height="20sp"
+            android:layout_below="@id/thetitle"
+            android:text="all" />
 
-    </TableRow>
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:src="@drawable/list_divider"
+        android:layout_below="@id/date"
+        android:background="#999999" />
 
-</TableLayout>
+</RelativeLayout>

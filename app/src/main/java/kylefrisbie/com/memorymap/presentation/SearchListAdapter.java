@@ -80,13 +80,12 @@ public class SearchListAdapter extends ArrayAdapter<Memory> {
         }
 
         Memory memory = getItem(position);
-
+        Calendar calendar = memory.getDate();
         TextView title = (TextView) view.findViewById(R.id.thetitle);
         title.setText(memory.getTitle());
         TextView date = (TextView) view.findViewById(R.id.date);
-        Calendar calendar = memory.getDate();
         String theDate = calendar.get(Calendar.MONTH)+ 1 + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
-        title.setText(theDate);
+        date.setText(theDate);
 
         return view;
     }
