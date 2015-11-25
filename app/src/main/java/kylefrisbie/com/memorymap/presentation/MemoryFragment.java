@@ -76,6 +76,7 @@ public class MemoryFragment extends Fragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+
     }
 
     public MemoryFragment() {

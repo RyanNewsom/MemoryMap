@@ -67,10 +67,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView"
+                android:id="@+id/auto_complete_search"
                 android:hint="Search For a Memory"
                 android:textSize="20sp"
                 android:layout_centerInParent="true"

@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +37,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private boolean mUserLocationInitiallyFound;
 
     //Views
+    private SearchListAdapter mCustomAdapter;
+    private AutoCompleteTextView mSearchView;
     private ImageButton mAddMemoryButton;
     private ImageButton mMyLocationButton;
 
@@ -65,6 +68,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
 
         mController = MemoryController.getInstance(this);
+        mSearchView = (AutoCompleteTextView) findViewById(R.id.auto_complete_search);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, new ArrayList<Memory>());
+        mSearchView.setAdapter(mCustomAdapter);
         mMyLocationButton = (ImageButton) findViewById(R.id.my_location_button);
         mAddMemoryButton = (ImageButton) findViewById(R.id.add_memory_button);
     }
@@ -103,6 +109,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCustomAdapter.notifyDataSetChanged();
+            }
+        });
+
         /**
          * Finds where the marker the user clicked can be found in the markers list, then compares it with the markers in the
          * marker array list,
@@ -122,6 +135,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 openMemoryFragment(theMemory);
             }
         });
+
+
     }
 
     @Override
@@ -129,6 +144,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
         setupUI();
         populateMemories(mController.getMemories());
+
     }
 
     private void setupUI() {
@@ -144,6 +160,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             for (int i = 0; i < theMemories.size(); i++) {
                 Memory currentMemory = theMemories.get(i);
                 addMemory(currentMemory);
+                mCustomAdapter.add(currentMemory);
             }
         }
 
