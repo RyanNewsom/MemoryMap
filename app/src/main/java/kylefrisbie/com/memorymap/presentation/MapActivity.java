@@ -127,6 +127,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        /**
+         * Finds where the marker the user clicked can be found in the markers list, then compares it with the markers in the
+         * marker array list,
+         */
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Memory theMemory = mMemories.get(
+                        getMemoryMarkerPosition(marker.getId())
+                );
+                openMemoryFragment(theMemory);
+            }
+        });
+
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
