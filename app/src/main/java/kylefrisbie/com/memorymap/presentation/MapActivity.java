@@ -27,6 +27,7 @@ import kylefrisbie.com.memorymap.model.Memory;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, OnMemoryChangedListener {
 
     public static String MEMORY_ID = "MEMORY_ID";
+    public static String MARKER_ID = "MARKER_ID";
     public static String LATLNGARRAY = "LATLNG";
 
     private MemoryController mController;
@@ -34,6 +35,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Location mUserLocation;
     private List<Memory> mMemories;
     private List<Marker> mMarkers;
+    private String mMemoryMarkerID;
     private boolean mUserLocationInitiallyFound;
 
     //Views
@@ -54,9 +56,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     @Override
-    public void onMemoryRemoved(Memory memory) {
+    public void onMemoryRemoved(Memory memory, String markerID) {
         //Find the memory in the array list, remove it, then remove it from the list of markers, and remove
         //that specific marker
+        mMarkers.remove(getMemoryMarkerPosition(markerID));
     }
 
     @Override
@@ -123,20 +126,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                int positionOfMemory = 0;
-                for(int i = 0; i < mMarkers.size(); i++){
-                    Marker currentMarker = mMarkers.get(i);
-                    if(marker.getId() == currentMarker.getId()){
-                        positionOfMemory = i;
-                        break;
-                    }
-                }
-                Memory theMemory = mMemories.get(positionOfMemory);
+                Memory theMemory = mMemories.get(
+                        getMemoryMarkerPosition(marker.getId())
+                );
                 openMemoryFragment(theMemory);
             }
         });
 
 
+    }
+
+    private int getMemoryMarkerPosition(String markerID) {
+        for(int i = 0; i < mMarkers.size(); i++){
+            Marker currentMarker = mMarkers.get(i);
+            if(markerID.equals(currentMarker.getId())){
+                mMemoryMarkerID = markerID;
+                return i;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -183,6 +191,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void openMemoryFragment(Memory memory) {
         Bundle bundle = new Bundle();
         bundle.putLong(MEMORY_ID, memory.getId());
+        bundle.putString(MARKER_ID, mMemoryMarkerID);
         MemoryFragment memoryFragment = new MemoryFragment();
         memoryFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.wholemap, memoryFragment).addToBackStack("null").commit();
@@ -212,7 +221,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
-                .snippet("" + newMemory.getDate()));
+                .snippet("" + newMemory.getDate().getTime()));
 
         mMarkers.add(newMarker);
     }

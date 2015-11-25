@@ -48,12 +48,12 @@ public class MemoryController {
         mMemoryChanged.onMemoryUpdated(memory);
     }
 
-    public void deleteMemory(Memory memoryToDelete){
+    public void deleteMemory(Memory memoryToDelete, String markerID){
         // Update the model
         Memory memory = Memory.findById(Memory.class, memoryToDelete.getId());
         memory.delete();
         // Notify the map
-        mMemoryChanged.onMemoryRemoved(memory);
+        mMemoryChanged.onMemoryRemoved(memory, markerID);
     }
 
     public List<Memory> getMemories(){

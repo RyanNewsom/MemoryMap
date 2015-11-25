@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import kylefrisbie.com.memorymap.R;
@@ -21,6 +22,7 @@ import kylefrisbie.com.memorymap.model.Memory;
 public class MemoryFragment extends Fragment {
     MemoryController mController;
     private long mMemoryID;
+    private String mMemoryMarkerID;
     private Memory mMemory;
     private EditText mMemoryTitle;
     private EditText mMemoryPlace;
@@ -29,12 +31,13 @@ public class MemoryFragment extends Fragment {
     private EditText mMemoryDescription;
     private Button mSaveButton;
     private Button mCancelButton;
+    private Button mDeleteButton;
     private Location mMemoryLocation;
 
     private void populateMemory() {
         mMemoryTitle.setText(mMemory.getTitle());
         mMemoryPlace.setText(mMemory.getPlaceName());
-        mMemoryDate.setDate(mMemory.getDate().getDate());
+        mMemoryDate.setDate(mMemory.getDate().getTimeInMillis());
         mPeopleList.setText(mMemory.getPeople().toString());
         mMemoryDescription.setText(mMemory.getDescription());
     }
@@ -47,6 +50,52 @@ public class MemoryFragment extends Fragment {
         mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
         mSaveButton = (Button) getView().findViewById(R.id.saveButton);
         mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
+        mDeleteButton = (Button) getView().findViewById(R.id.deleteButton);
+        mDeleteButton.setVisibility(View.INVISIBLE);
+    }
+
+    private Calendar generateMemoryDate() {
+        return new Calendar() {
+            @Override
+            public void add(int field, int value) {
+
+            }
+
+            @Override
+            protected void computeFields() {
+
+            }
+
+            @Override
+            protected void computeTime() {
+
+            }
+
+            @Override
+            public int getGreatestMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getLeastMaximum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getMaximum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public void roll(int field, boolean increment) {
+
+            }
+        };
     }
 
     public void addListeners() {
@@ -56,12 +105,13 @@ public class MemoryFragment extends Fragment {
                 Memory memory = new Memory();
                 memory.setTitle(mMemoryTitle.getText().toString());
                 memory.setPlaceName(mMemoryPlace.getText().toString());
-                memory.setDate(new Date(mMemoryDate.getDate()));
+                Calendar date = generateMemoryDate();
+                date.setTimeInMillis(mMemoryDate.getDate());
+                memory.setDate(date);
                 memory.setPeople(mPeopleList.getText().toString());
                 memory.setDescription(mMemoryDescription.getText().toString());
                 memory.setLatitude(mMemoryLocation.getLatitude());
                 memory.setLongitude(mMemoryLocation.getLongitude());
-                mController.createMemory(memory);
 
                 // use interface to notify MapActivity
                 mController.createMemory(memory);
@@ -77,6 +127,13 @@ public class MemoryFragment extends Fragment {
             }
         });
 
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mController.deleteMemory(mMemory, mMemoryMarkerID);
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     public MemoryFragment() {
@@ -92,6 +149,7 @@ public class MemoryFragment extends Fragment {
         mMemoryLocation = new Location("MemoryLocation");
 
         if (mMemoryID != -1) {
+            mMemoryMarkerID = bundle.getString(MapActivity.MARKER_ID);
             mMemory = mController.findMemoryByID(mMemoryID);
             mMemoryLocation.setLatitude(mMemory.getLatitude());
             mMemoryLocation.setLongitude(mMemory.getLongitude());
@@ -115,6 +173,7 @@ public class MemoryFragment extends Fragment {
         addListeners();
 
         if (mMemoryID != -1) {
+            mDeleteButton.setVisibility(View.VISIBLE);
             populateMemory();
         }
     }
