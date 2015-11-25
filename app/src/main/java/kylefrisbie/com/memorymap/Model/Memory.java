@@ -1,12 +1,11 @@
 package kylefrisbie.com.memorymap.model;
 
-import android.location.Location;
+import android.net.Uri;
 
 import com.orm.SugarRecord;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Memory extends SugarRecord<Memory> {
     private String title;
