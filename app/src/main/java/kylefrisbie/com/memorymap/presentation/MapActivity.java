@@ -3,9 +3,12 @@ package kylefrisbie.com.memorymap.presentation;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -53,13 +57,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMemoryUpdated(Memory memory) {
         //Find the memory in the array list, and update the information
+        int position = getLocationOfMemory(memory);
+        if (position == -1) {
+            //there was no match...
+            mMemories.add(memory);
+            Log.e(getLocalClassName(), "onMemoryUpdated could not find a match, so it added a new memory");
+        } else {
+            mMemories.remove(position);
+            mMemories.add(position, memory);
+        }
     }
 
     @Override
     public void onMemoryRemoved(Memory memory, String markerID) {
         //Find the memory in the array list, remove it, then remove it from the list of markers, and remove
         //that specific marker
-        mMarkers.remove(getMemoryMarkerPosition(markerID));
+        int position = getMemoryMarkerPosition(markerID);
+        mMemories.remove(position);
+        mMarkers.remove(position);
     }
 
     @Override
@@ -117,20 +132,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
-        /**
-         * Finds where the marker the user clicked can be found in the markers list, then compares it with the markers in the
-         * marker array list,
-         */
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        mSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
-                Memory theMemory = mMemories.get(
-                        getMemoryMarkerPosition(marker.getId())
-                );
-                openMemoryFragment(theMemory);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Memory selectedMemory = (Memory) parent.getItemAtPosition(position);
+                int loc = getLocationOfMemory(selectedMemory);
+                Marker selectedMarker = mMarkers.get(loc);
+                Location location = new Location("");
+                location.setLatitude(selectedMemory.getLatitude());
+                location.setLongitude(selectedMemory.getLongitude());
+                goToLocation(location);
+                selectedMarker.showInfoWindow();
             }
         });
-
 
     }
 
@@ -173,16 +187,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     /**
-     * This will find a memory that a user searches for, and take them to it
-     *
-     * @param searchQuery
-     */
-    private void searchForMemory(String searchQuery) {
-        //find the memory
-        //pass the controller a string, get back the list
-    }
-
-    /**
      * Viewing/editing a memory
      * @param memory
      */
@@ -219,10 +223,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if(mCustomAdapter != null) {
             mCustomAdapter.add(newMemory);
         }
+        Calendar calendar = newMemory.getDate();
+        String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
+
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         Marker newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
-                .snippet("" + newMemory.getDate().getTime()));
+                .snippet("" + theDate));
 
         mMarkers.add(newMarker);
     }
@@ -233,7 +240,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
      * @param location - the location to go to
      */
 
-    private void goToLocation(Location location){
+    private void goToLocation(Location location) {
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
+    }
+
+    private int getLocationOfMemory(Memory theMemory){
+        for(int i = 0; i < mMemories.size(); i++){
+            if(theMemory.getId() == mMemories.get(i).getId()){
+                return i;
+            }
+        }
+        return -1;
     }
 }
