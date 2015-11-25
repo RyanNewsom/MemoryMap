@@ -74,8 +74,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //that specific marker
         int position = getMemoryMarkerPosition(markerID);
         mMemories.remove(position);
-        mMarkers.remove(position);
-        Marker toRemove = mMarkers.remove(getMemoryMarkerPosition(markerID));
+        Marker toRemove = mMarkers.remove(position);
         toRemove.remove();
     }
 

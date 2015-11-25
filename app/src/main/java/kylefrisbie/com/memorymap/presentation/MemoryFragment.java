@@ -57,8 +57,10 @@ public class MemoryFragment extends Fragment {
         mMemoryDate.setDate(mMemory.getDate().getTimeInMillis());
         mPeopleList.setText(mMemory.getPeople());
         mMemoryDescription.setText(mMemory.getDescription());
-        mPhotoUri = Uri.parse(mMemory.getPhotoURI());
-        mMemoryImage.setImageURI(mPhotoUri);
+        if (mMemory.getPhotoURI() != null) {
+            mPhotoUri = Uri.parse(mMemory.getPhotoURI());
+            mMemoryImage.setImageURI(mPhotoUri);
+        }
     }
 
     private void linkUpViewItems() {
@@ -103,7 +105,9 @@ public class MemoryFragment extends Fragment {
                 memory.setDescription(mMemoryDescription.getText().toString());
                 memory.setLatitude(mMemoryLocation.getLatitude());
                 memory.setLongitude(mMemoryLocation.getLongitude());
-                memory.setPhotoURI(mPhotoUri.getEncodedPath());
+                if (mPhotoUri != null) {
+                    memory.setPhotoURI(mPhotoUri.getEncodedPath());
+                }
 
                 // use interface to notify MapActivity
                 mController.createMemory(memory);
