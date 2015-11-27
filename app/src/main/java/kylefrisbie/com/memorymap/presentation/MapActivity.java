@@ -19,6 +19,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -250,8 +253,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mCustomAdapter.add(newMemory);
         }
         Calendar calendar = newMemory.getDate();
-        calendar.setTime(calendar.getTime());
-        String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
+        Date newDate = new Date(calendar.getTimeInMillis());
+        DateFormat df = new SimpleDateFormat("MM/dd/yy");
+        String theDate = df.format(newDate);
+
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         if(newMemory.getTitle() == null){
             newMemory.setTitle("Add a title");
