@@ -77,6 +77,21 @@ public class MemoryFragment extends Fragment {
         mMemoryImage = (ImageView) getView().findViewById(R.id.imageView);
     }
 
+    public void populateMemoryOnSave() {
+        mMemory.setTitle(mMemoryTitle.getText().toString());
+        mMemory.setPlaceName(mMemoryPlace.getText().toString());
+        Calendar date = generateMemoryDate();
+        date.setTimeInMillis(mMemoryDate.getDate());
+        mMemory.setDate(date);
+        mMemory.setPeople(mPeopleList.getText().toString());
+        mMemory.setDescription(mMemoryDescription.getText().toString());
+        mMemory.setLatitude(mMemoryLocation.getLatitude());
+        mMemory.setLongitude(mMemoryLocation.getLongitude());
+        if (mPhotoUri != null) {
+            mMemory.setPhotoURI(mPhotoUri.getEncodedPath());
+        }
+    }
+
     public void addListeners() {
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,22 +110,14 @@ public class MemoryFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Memory memory = mMemory;
-                memory.setTitle(mMemoryTitle.getText().toString());
-                memory.setPlaceName(mMemoryPlace.getText().toString());
-                Calendar date = generateMemoryDate();
-                date.setTimeInMillis(mMemoryDate.getDate());
-                memory.setDate(date);
-                memory.setPeople(mPeopleList.getText().toString());
-                memory.setDescription(mMemoryDescription.getText().toString());
-                memory.setLatitude(mMemoryLocation.getLatitude());
-                memory.setLongitude(mMemoryLocation.getLongitude());
-                if (mPhotoUri != null) {
-                    memory.setPhotoURI(mPhotoUri.getEncodedPath());
+                if (mMemory == null) {
+                    mMemory = new Memory();
+                    populateMemoryOnSave();
+                    mController.createMemory(mMemory);
+                } else {
+                    populateMemoryOnSave();
+                    mController.updateMemory(mMemory);
                 }
-
-                // use interface to notify MapActivity
-                mController.createMemory(memory);
 
                 getActivity().getSupportFragmentManager().popBackStack();
             }
@@ -224,7 +231,6 @@ public class MemoryFragment extends Fragment {
         mController = MemoryController.getInstance(null);
         Bundle bundle = getArguments();
 
-        mMemory = new Memory();
         mMemoryID = bundle.getLong(MapActivity.MEMORY_ID);
         mMemoryLocation = new Location("MemoryLocation");
 
