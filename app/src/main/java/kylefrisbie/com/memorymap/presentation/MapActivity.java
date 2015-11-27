@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +53,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMemoryAdded(Memory memory) {
         addMemory(memory);
-        mMemories.add(memory);
+        int position = getLocationOfMemory(memory);
+        mMemories.set(position, memory);
     }
 
     @Override
@@ -66,8 +66,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mMemories.add(memory);
             Log.e(getLocalClassName(), "onMemoryUpdated could not find a match, so it added a new memory");
         } else {
-            mMemories.remove(position);
-            mMemories.add(position, memory);
+            mMemories.set(position, memory);
         }
     }
 
