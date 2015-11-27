@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -249,8 +250,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mCustomAdapter.add(newMemory);
         }
         Calendar calendar = newMemory.getDate();
+        calendar.setTime(calendar.getTime());
         String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
-
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         if(newMemory.getTitle() == null){
             newMemory.setTitle("Add a title");
