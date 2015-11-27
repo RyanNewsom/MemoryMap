@@ -1,5 +1,6 @@
 package kylefrisbie.com.memorymap.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.listener.OnMemoryChangedListener;
@@ -8,31 +9,38 @@ import kylefrisbie.com.memorymap.model.Memory;
 public class MemoryController {
     private static MemoryController mInstance;
     private static OnMemoryChangedListener mMemoryChanged;
+
     /**
      * Private constructor so that you can not create an object of this type
      */
-    private MemoryController(){}
+    private MemoryController() {
+    }
 
     /**
      * Gets an instance of the memory controller
+     *
      * @return - the instance
      */
-    public static MemoryController getInstance(OnMemoryChangedListener callback){
-        if(mInstance == null){
+    public static MemoryController getInstance(OnMemoryChangedListener callback) {
+        if (mInstance == null) {
             mInstance = new MemoryController();
             mMemoryChanged = callback;
         }
         return mInstance;
     }
 
-    public void createMemory(Memory newMemory){
+    public void createMemory(Memory newMemory) {
         // Create new memory
+        if (newMemory.getDate() == null) {
+            newMemory.setDate(Calendar.getInstance());
+        }
         newMemory.save();
+
         // Notify map here
         mMemoryChanged.onMemoryAdded(newMemory);
     }
 
-    public void updateMemory(Memory updatedMemory){
+    public void updateMemory(Memory updatedMemory) {
         // Update the model
         Memory memory = Memory.findById(Memory.class, updatedMemory.getId());
         memory.setTitle(updatedMemory.getTitle());
@@ -48,7 +56,7 @@ public class MemoryController {
         mMemoryChanged.onMemoryUpdated(memory);
     }
 
-    public void deleteMemory(Memory memoryToDelete, String markerID){
+    public void deleteMemory(Memory memoryToDelete, String markerID) {
         // Update the model
         Memory memory = Memory.findById(Memory.class, memoryToDelete.getId());
         memory.delete();
@@ -56,12 +64,12 @@ public class MemoryController {
         mMemoryChanged.onMemoryRemoved(memory, markerID);
     }
 
-    public List<Memory> getMemories(){
+    public List<Memory> getMemories() {
         // Get the memories from the model
         try {
             return Memory.listAll(Memory.class);
         } catch (Exception e) {
-            return  null;
+            return null;
         }
     }
 

@@ -95,7 +95,7 @@ public class MemoryFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Memory memory = new Memory();
+                Memory memory = mMemory;
                 memory.setTitle(mMemoryTitle.getText().toString());
                 memory.setPlaceName(mMemoryPlace.getText().toString());
                 Calendar date = generateMemoryDate();
@@ -194,7 +194,7 @@ public class MemoryFragment extends Fragment {
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
+                Log.d("MemoryMap", "failed to create directory");
                 return null;
             }
         }
@@ -224,6 +224,7 @@ public class MemoryFragment extends Fragment {
         mController = MemoryController.getInstance(null);
         Bundle bundle = getArguments();
 
+        mMemory = new Memory();
         mMemoryID = bundle.getLong(MapActivity.MEMORY_ID);
         mMemoryLocation = new Location("MemoryLocation");
 
