@@ -269,6 +269,9 @@ public class MemoryFragment extends Fragment {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 getOutputMediaFile(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                if (mPhotoUri != null) {
+                    mMemoryImage.setImageURI(mPhotoUri);
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
