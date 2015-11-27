@@ -67,6 +67,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             Log.e(getLocalClassName(), "onMemoryUpdated could not find a match, so it added a new memory");
         } else {
             mMemories.set(position, memory);
+            mMarkers.get(position).setTitle(memory.getTitle());
         }
     }
 
