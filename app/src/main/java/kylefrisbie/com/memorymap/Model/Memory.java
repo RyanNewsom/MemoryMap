@@ -1,10 +1,7 @@
 package kylefrisbie.com.memorymap.model;
 
-import android.net.Uri;
-
 import com.orm.SugarRecord;
 
-import java.net.URI;
 import java.util.Calendar;
 
 public class Memory extends SugarRecord<Memory> {
