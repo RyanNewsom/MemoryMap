@@ -249,7 +249,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mCustomAdapter.add(newMemory);
         }
         Calendar calendar = newMemory.getDate();
-        String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
+        String theDate = calendar.get(Calendar.MONTH) + 1 + "/" + calendar.get(Calendar.DATE) + "/" + calendar.get(Calendar.YEAR);
 
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
         if(newMemory.getTitle() == null){
