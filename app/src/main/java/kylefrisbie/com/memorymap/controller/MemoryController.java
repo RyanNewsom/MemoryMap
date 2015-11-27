@@ -31,6 +31,9 @@ public class MemoryController {
 
     public void createMemory(Memory newMemory) {
         // Create new memory
+        if (newMemory.getTitle() == null || newMemory.getTitle().equals("")) {
+            newMemory.setTitle("Untitled");
+        }
         if (newMemory.getDate() == null) {
             newMemory.setDate(Calendar.getInstance());
         }
@@ -43,7 +46,11 @@ public class MemoryController {
     public void updateMemory(Memory updatedMemory) {
         // Update the model
         Memory memory = Memory.findById(Memory.class, updatedMemory.getId());
-        memory.setTitle(updatedMemory.getTitle());
+        if (updatedMemory.getTitle() == null || updatedMemory.getTitle().equals("")) {
+            updatedMemory.setTitle("Untitled");
+        } else {
+            memory.setTitle(updatedMemory.getTitle());
+        }
         memory.setDate(updatedMemory.getDate());
         memory.setPeople(updatedMemory.getPeople());
         memory.setPhotoURI(updatedMemory.getPhotoURI());
