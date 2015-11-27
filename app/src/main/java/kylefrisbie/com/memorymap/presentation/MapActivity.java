@@ -43,6 +43,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private List<Marker> mMarkers;
     private String mMemoryMarkerID;
     private boolean mUserLocationInitiallyFound;
+    private Marker mViewedMarker;
+
 
     //Views
     private SearchListAdapter mCustomAdapter;
@@ -68,6 +70,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         } else {
             mMemories.set(position, memory);
             mMarkers.get(position).setTitle(memory.getTitle());
+            if(mViewedMarker != null){
+                if(mViewedMarker.isInfoWindowShown()){
+                    mViewedMarker.hideInfoWindow();
+                    mViewedMarker.showInfoWindow();
+                }
+            }
         }
     }
 
@@ -125,6 +133,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
+                mViewedMarker = marker;
                 return true;
             }
         });
@@ -282,4 +291,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
         return -1;
     }
+
+
 }
