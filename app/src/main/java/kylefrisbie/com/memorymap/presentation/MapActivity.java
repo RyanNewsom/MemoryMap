@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -254,20 +255,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         Date newDate = new Date(calendar.getTimeInMillis());
         DateFormat df = new SimpleDateFormat("MM/dd/yy");
         String theDate = df.format(newDate);
-
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
-        if(newMemory.getTitle() == null){
-            newMemory.setTitle("Add a title");
-        }
-        if(newMemory.getDate() == null){
-            newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
-                    .title(newMemory.getTitle())
-                    .snippet("Add a date"));
-        } else {
-            newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
-                    .title(newMemory.getTitle())
-                    .snippet("" + theDate));
-        }
+
+        newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                .title(newMemory.getTitle())
+                .snippet("" + theDate));
 
         mMarkers.add(newMarker);
     }
