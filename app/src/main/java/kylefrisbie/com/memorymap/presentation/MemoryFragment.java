@@ -125,6 +125,22 @@ public class MemoryFragment extends Fragment {
             }
         });
 
+        mMemoryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                String filePath;
+                if (mPhotoUri.toString().contains("content")) {
+                    filePath = "content://media" + mPhotoUri.getEncodedPath();
+                } else {
+                    filePath = "file://" + mPhotoUri.getEncodedPath();
+                }
+                intent.setDataAndType(Uri.parse(filePath), "image/*");
+                startActivity(intent);
+            }
+        });
+
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
