@@ -71,6 +71,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         } else {
             mMemories.set(position, memory);
             mMarkers.get(position).setTitle(memory.getTitle());
+            mMarkers.get(position).setSnippet("" + memory.getDate());
             if(mViewedMarker != null){
                 if(mViewedMarker.isInfoWindowShown()){
                     mViewedMarker.hideInfoWindow();
