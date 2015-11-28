@@ -1,5 +1,6 @@
 package kylefrisbie.com.memorymap.presentation;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,11 @@ public class TabbedActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
+    }
+
+    public void onGetStartClicked(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
     }
 
 
@@ -108,6 +114,10 @@ public class TabbedActivity extends AppCompatActivity {
         public int getCount() {
             // Show 3 total pages.
             return 3;
+        }
+
+        public void onGetStartClicked(View v){
+
         }
 
     }
