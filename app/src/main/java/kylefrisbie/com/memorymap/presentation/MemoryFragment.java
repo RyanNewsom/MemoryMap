@@ -92,7 +92,11 @@ public class MemoryFragment extends Fragment {
         mMemory.setLatitude(mMemoryLocation.getLatitude());
         mMemory.setLongitude(mMemoryLocation.getLongitude());
         if (mPhotoUri != null) {
-            mMemory.setPhotoURI(mPhotoUri.getEncodedPath());
+            if (mPhotoUri.toString().contains("content")) {
+                mMemory.setPhotoURI("content://media" + mPhotoUri.getEncodedPath());
+            } else {
+                mMemory.setPhotoURI(mPhotoUri.getEncodedPath());
+            }
         }
     }
 
@@ -208,7 +212,7 @@ public class MemoryFragment extends Fragment {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+                Environment.DIRECTORY_PICTURES), "MemoryMap");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -280,18 +284,6 @@ public class MemoryFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                getOutputMediaFile(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-//                if (mPhotoUri != null) {
-//                    mMemoryImage.setImageURI(mPhotoUri);
-//                }
-//            } else if (resultCode == RESULT_CANCELED) {
-//                // User cancelled the image capture
-//            } else {
-//                // Image capture failed, advise user
-//            }
-//        }
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case GALLERY_ACTIVITY_REQUEST_CODE:
