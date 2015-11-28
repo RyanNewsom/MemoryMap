@@ -37,10 +37,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.MapActivity"
             android:label="@string/title_activity_map"></activity>
         <activity
             android:name=".presentation.TabbedActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_tabbed"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

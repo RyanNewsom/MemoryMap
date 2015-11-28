@@ -54,6 +54,7 @@ public class TabbedActivity extends AppCompatActivity {
     }
 
     public void onGetStartClicked(View view) {
+        
         Intent intent = new Intent(this, MapActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -69,7 +70,6 @@ public class TabbedActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
@@ -116,10 +116,6 @@ public class TabbedActivity extends AppCompatActivity {
         public int getCount() {
             // Show 3 total pages.
             return 3;
-        }
-
-        public void onGetStartClicked(View v){
-
         }
 
     }

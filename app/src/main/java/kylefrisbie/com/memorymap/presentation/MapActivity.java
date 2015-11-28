@@ -166,7 +166,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCustomAdapter.notifyDataSetChanged();
             }
         });
 
@@ -201,8 +200,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setupUI();
-        populateMemories(mController.getMemories());
         mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        populateMemories(mController.getMemories());
         mSearchView.setAdapter(mCustomAdapter);
     }
 
@@ -261,6 +260,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         Marker newMarker;
         if(mCustomAdapter != null) {
             mCustomAdapter.add(newMemory);
+            mCustomAdapter.notifyDataSetChanged();
         }
         String theDate = getFormattedTime(newMemory.getDate());
 

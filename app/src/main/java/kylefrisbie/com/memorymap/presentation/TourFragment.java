@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import kylefrisbie.com.memorymap.R;
+import kylefrisbie.com.memorymap.model.Memory;
 
 /**
  * A simple {@link Fragment} subclass.
