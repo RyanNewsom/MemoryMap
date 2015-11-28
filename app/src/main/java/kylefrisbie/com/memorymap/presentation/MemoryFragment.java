@@ -3,6 +3,7 @@ package kylefrisbie.com.memorymap.presentation;
 
 import android.content.Intent;
 import android.location.Location;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -34,7 +36,7 @@ public class MemoryFragment extends Fragment {
     private static final int RESULT_OK = -1;
     private static final int RESULT_CANCELED = 0;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+    private static final int GALLERY_ACTIVITY_REQUEST_CODE = 200;
     private Uri mPhotoUri;
     private long mMemoryID;
     private String mMemoryMarkerID;
@@ -44,7 +46,8 @@ public class MemoryFragment extends Fragment {
     private CalendarView mMemoryDate;
     private EditText mPeopleList;
     private EditText mMemoryDescription;
-    private Button mCameraButton;
+    private ImageButton mCameraButton;
+    private ImageButton mGalleryButton;
     private Button mSaveButton;
     private Button mCancelButton;
     private Button mDeleteButton;
@@ -68,7 +71,8 @@ public class MemoryFragment extends Fragment {
         mMemoryPlace = (EditText) getView().findViewById(R.id.placeEditText);
         mMemoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
         mPeopleList = (EditText) getView().findViewById(R.id.peopleEditText);
-        mCameraButton = (Button) getView().findViewById(R.id.cameraButton);
+        mCameraButton = (ImageButton) getView().findViewById(R.id.cameraButton);
+        mGalleryButton = (ImageButton) getView().findViewById(R.id.galleryButton);
         mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
         mSaveButton = (Button) getView().findViewById(R.id.saveButton);
         mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
@@ -104,6 +108,16 @@ public class MemoryFragment extends Fragment {
 
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        mGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent , GALLERY_ACTIVITY_REQUEST_CODE );
             }
         });
 
@@ -266,16 +280,32 @@ public class MemoryFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                getOutputMediaFile(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                if (mPhotoUri != null) {
-                    mMemoryImage.setImageURI(mPhotoUri);
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
+//        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                getOutputMediaFile(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//                if (mPhotoUri != null) {
+//                    mMemoryImage.setImageURI(mPhotoUri);
+//                }
+//            } else if (resultCode == RESULT_CANCELED) {
+//                // User cancelled the image capture
+//            } else {
+//                // Image capture failed, advise user
+//            }
+//        }
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case GALLERY_ACTIVITY_REQUEST_CODE:
+                    if (null != data) {
+                        mPhotoUri = data.getData();
+                        mMemoryImage.setImageURI(mPhotoUri);
+                    }
+                    break;
+                case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+                    if (mPhotoUri != null) {
+                        mMemoryImage.setImageURI(mPhotoUri);
+                    }
+                default:
+                    break;
             }
         }
     }
