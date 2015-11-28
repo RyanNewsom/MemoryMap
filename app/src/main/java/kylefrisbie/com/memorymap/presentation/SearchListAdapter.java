@@ -8,8 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import kylefrisbie.com.memorymap.R;
@@ -83,10 +86,16 @@ public class SearchListAdapter extends ArrayAdapter<Memory> {
         TextView title = (TextView) view.findViewById(R.id.thetitle);
         title.setText(memory.getTitle());
         TextView date = (TextView) view.findViewById(R.id.date);
-        String theDate = calendar.get(Calendar.MONTH)+ 1 + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
+        String theDate = getFormattedTime(calendar);
         date.setText(theDate);
 
         return view;
+    }
+
+    private String getFormattedTime(Calendar date) {
+        Date newDate = new Date(date.getTimeInMillis());
+        DateFormat df = new SimpleDateFormat("MM/dd/yy");
+        return df.format(newDate);
     }
 
     @Override

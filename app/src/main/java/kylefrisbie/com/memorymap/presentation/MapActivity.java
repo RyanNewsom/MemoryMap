@@ -58,6 +58,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         addMemory(memory);
         int position = getLocationOfMemory(memory);
         mMemories.set(position, memory);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchView.setAdapter(mCustomAdapter);
     }
 
     @Override
@@ -79,6 +81,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             }
         }
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchView.setAdapter(mCustomAdapter);
     }
 
     @Override
@@ -89,6 +93,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMemories.remove(position);
         Marker toRemove = mMarkers.remove(position);
         toRemove.remove();
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchView.setAdapter(mCustomAdapter);
     }
 
     @Override
@@ -200,8 +206,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setupUI();
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
         populateMemories(mController.getMemories());
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
 
