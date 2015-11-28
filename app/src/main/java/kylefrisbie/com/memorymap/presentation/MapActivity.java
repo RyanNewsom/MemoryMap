@@ -71,7 +71,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         } else {
             mMemories.set(position, memory);
             mMarkers.get(position).setTitle(memory.getTitle());
-            mMarkers.get(position).setSnippet("" + memory.getDate());
+            mMarkers.get(position).setSnippet("" + getFormattedTime(memory.getDate()));
             if(mViewedMarker != null){
                 if(mViewedMarker.isInfoWindowShown()){
                     mViewedMarker.hideInfoWindow();
@@ -262,10 +262,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if(mCustomAdapter != null) {
             mCustomAdapter.add(newMemory);
         }
-        Calendar calendar = newMemory.getDate();
-        Date newDate = new Date(calendar.getTimeInMillis());
-        DateFormat df = new SimpleDateFormat("MM/dd/yy");
-        String theDate = df.format(newDate);
+        String theDate = getFormattedTime(newMemory.getDate());
+
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
 
         newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
@@ -273,6 +271,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .snippet("" + theDate));
 
         mMarkers.add(newMarker);
+    }
+
+    private String getFormattedTime(Calendar date) {
+        Date newDate = new Date(date.getTimeInMillis());
+        DateFormat df = new SimpleDateFormat("MM/dd/yy");
+        return df.format(newDate);
     }
 
     /**
