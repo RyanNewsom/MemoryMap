@@ -56,17 +56,6 @@
             android:shadowDy="0"
             android:shadowRadius="50">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/hamburger_icon"
-                android:layout_toRightOf="@+id/textView"
-                android:background="#00ffffff"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp" />
-
             <AutoCompleteTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
