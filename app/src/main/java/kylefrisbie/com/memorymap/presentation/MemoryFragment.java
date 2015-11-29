@@ -3,7 +3,11 @@ package kylefrisbie.com.memorymap.presentation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +69,7 @@ public class MemoryFragment extends Fragment {
         if (mMemory.getPhotoURI() != null) {
             mPhotoUri = Uri.parse(mMemory.getPhotoURI());
             mMemoryImage.setImageURI(mPhotoUri);
+            orientImageView(mMemoryImage);
         }
     }
 
@@ -122,7 +128,7 @@ public class MemoryFragment extends Fragment {
                 Intent galleryIntent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent , GALLERY_ACTIVITY_REQUEST_CODE );
+                startActivityForResult(galleryIntent, GALLERY_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -218,13 +224,59 @@ public class MemoryFragment extends Fragment {
         };
     }
 
-    /** Create a file Uri for saving an image or video */
-    private Uri getOutputMediaFileUri(int type){
+    public void orientImageView(ImageView imageView) {
+        try {
+            ExifInterface exif = new ExifInterface(mPhotoUri.getEncodedPath());
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            int rotate = 0;
+
+            switch (exifOrientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
+
+            if (rotate != 0) {
+                int w = bitmap.getWidth();
+                int h = bitmap.getHeight();
+
+                Matrix mtx = new Matrix();
+                mtx.preRotate(rotate);
+
+                // Rotating Bitmap & convert to ARGB_8888, required by tess
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                imageView.setImageBitmap(bitmap);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /** Create a File for saving an image or video */
-    private File getOutputMediaFile(int type){
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -234,8 +286,8 @@ public class MemoryFragment extends Fragment {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 Log.d("MemoryMap", "failed to create directory");
                 return null;
             }
@@ -244,12 +296,12 @@ public class MemoryFragment extends Fragment {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
+        if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
+                    "IMG_" + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
+                    "VID_" + timeStamp + ".mp4");
         } else {
             return null;
         }
