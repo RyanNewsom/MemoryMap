@@ -68,8 +68,11 @@ public class SearchListAdapter extends ArrayAdapter<Memory> {
     public SearchListAdapter(Context context, int textViewResourceId, List<Memory> memorys) {
         super(context, textViewResourceId, memorys);
         // copy all the memorys into a master list
-        mMemorys = new ArrayList<Memory>(memorys.size());
-        mMemorys.addAll(memorys);
+        if(memorys == null) {
+            memorys = new ArrayList<>();
+        }
+            mMemorys = new ArrayList<>(memorys.size());
+            mMemorys.addAll(memorys);
         layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

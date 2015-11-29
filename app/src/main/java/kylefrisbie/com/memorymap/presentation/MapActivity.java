@@ -41,6 +41,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Location mUserLocation;
     private List<Memory> mMemories;
+    private List<Memory> mSearchMemories;
     private List<Marker> mMarkers;
     private String mMemoryMarkerID;
     private boolean mUserLocationInitiallyFound;
@@ -56,7 +57,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMemoryAdded(Memory memory) {
         addMemory(memory);
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchMemories = new ArrayList<>(mMemories);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
 
@@ -79,7 +81,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             }
         }
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchMemories = new ArrayList<>(mMemories);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
 
@@ -91,7 +94,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMemories.remove(position);
         Marker toRemove = mMarkers.remove(position);
         toRemove.remove();
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+
+        mSearchMemories = new ArrayList<>(mMemories);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
 
@@ -99,6 +104,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMemories = new ArrayList<>();
+        mSearchMemories = new ArrayList<>();
         setContentView(R.layout.activity_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -206,7 +212,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
         setupUI();
         populateMemories(mController.getMemories());
-        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
+        mSearchMemories = new ArrayList<>(mMemories);
+        mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
 
