@@ -234,9 +234,13 @@ public class MemoryFragment extends Fragment {
             switch (orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     rotate = 90;
+                    break;
                 case ExifInterface.ORIENTATION_ROTATE_180:
                     rotate = 180;
+                    break;
                 case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
             }
 
             Bitmap bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
@@ -257,6 +261,7 @@ public class MemoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
+    
 
     /**
      * Create a file Uri for saving an image or video
