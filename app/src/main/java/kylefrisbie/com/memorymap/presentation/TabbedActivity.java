@@ -1,5 +1,6 @@
 package kylefrisbie.com.memorymap.presentation;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -58,6 +59,12 @@ public class TabbedActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        ProgressDialog dialog = new ProgressDialog(TabbedActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         finish();
     }
 

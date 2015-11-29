@@ -261,7 +261,7 @@ public class MemoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    
+
 
     /**
      * Create a file Uri for saving an image or video
