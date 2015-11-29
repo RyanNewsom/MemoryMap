@@ -30,10 +30,12 @@ public class NavigatorActivity extends AppCompatActivity {
             mPrefs.edit().putBoolean(TAKE_TO_TUTORIAL, false).apply();
 
             startActivity(intent);
+            finish();
         } else{
             Intent intent = new Intent(this, MapActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
         }
     }
 }

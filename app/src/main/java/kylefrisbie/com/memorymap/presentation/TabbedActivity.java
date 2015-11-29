@@ -64,8 +64,8 @@ public class TabbedActivity extends AppCompatActivity {
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
         finish();
+        dialog.show();
     }
 
 
