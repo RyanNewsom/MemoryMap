@@ -224,6 +224,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return 0;
     }
 
+
+    // check to see if location services are enabled
+    private void verifyLocationServices() {
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            enableGPS();
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -233,12 +243,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
 
-        // check to see if location services are enabled
-        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            enableGPS();
-        }
+        verifyLocationServices();
     }
 
     private void setupUI() {
