@@ -94,6 +94,8 @@ public class TabbedActivity extends AppCompatActivity {
                 case 2:
                     f = TourFragment.newInstance(R.layout.tutorial_3);
                     break;
+                default:
+                    break;
             }
             return f;
         }

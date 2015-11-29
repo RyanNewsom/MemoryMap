@@ -7,14 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kylefrisbie.com.memorymap.R;
-import kylefrisbie.com.memorymap.model.Memory;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TourFragment extends Fragment {
-    private int mLayoutid;
+    private int mLayoutId;
 
     private TourFragment() {
         // Required empty public constructor
@@ -22,7 +19,7 @@ public class TourFragment extends Fragment {
 
     public static Fragment newInstance(int layoutId){
         TourFragment f = new TourFragment();
-        f.mLayoutid = layoutId;
+        f.mLayoutId = layoutId;
 
         return f;
     }
@@ -32,7 +29,7 @@ public class TourFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(mLayoutid, container, false);
+        return inflater.inflate(mLayoutId, container, false);
     }
 
     @Override

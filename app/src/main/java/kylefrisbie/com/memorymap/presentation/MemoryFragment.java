@@ -24,6 +24,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +37,17 @@ import kylefrisbie.com.memorymap.controller.MemoryController;
 import kylefrisbie.com.memorymap.model.Memory;
 
 public class MemoryFragment extends Fragment {
+
     MemoryController mController;
+
+    // request code values for intents
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final int RESULT_OK = -1;
-    private static final int RESULT_CANCELED = 0;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int GALLERY_ACTIVITY_REQUEST_CODE = 200;
+
+    // member variables
     private Uri mPhotoUri;
     private long mMemoryID;
     private String mMemoryMarkerID;
@@ -60,6 +65,7 @@ public class MemoryFragment extends Fragment {
     private Location mMemoryLocation;
     private ImageView mMemoryImage;
 
+    // populate the memory in the fragment view
     private void populateMemory() {
         mMemoryTitle.setText(mMemory.getTitle());
         mMemoryPlace.setText(mMemory.getPlaceName());
@@ -73,25 +79,11 @@ public class MemoryFragment extends Fragment {
         }
     }
 
-    private void linkUpViewItems() {
-        mMemoryTitle = (EditText) getView().findViewById(R.id.titleEditText);
-        mMemoryPlace = (EditText) getView().findViewById(R.id.placeEditText);
-        mMemoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
-        mPeopleList = (EditText) getView().findViewById(R.id.peopleEditText);
-        mCameraButton = (ImageButton) getView().findViewById(R.id.cameraButton);
-        mGalleryButton = (ImageButton) getView().findViewById(R.id.galleryButton);
-        mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
-        mSaveButton = (Button) getView().findViewById(R.id.saveButton);
-        mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
-        mDeleteButton = (Button) getView().findViewById(R.id.deleteButton);
-        mDeleteButton.setVisibility(View.INVISIBLE);
-        mMemoryImage = (ImageView) getView().findViewById(R.id.imageView);
-    }
-
+    // store changed values so they persist in the database
     public void populateMemoryOnSave() {
         mMemory.setTitle(mMemoryTitle.getText().toString());
         mMemory.setPlaceName(mMemoryPlace.getText().toString());
-        Calendar date = generateMemoryDate();
+        Calendar date = generateCalendarObject();
         date.setTimeInMillis(mMemoryDate.getDate());
         mMemory.setDate(date);
         mMemory.setPeople(mPeopleList.getText().toString());
@@ -107,6 +99,7 @@ public class MemoryFragment extends Fragment {
         }
     }
 
+    // add on click listeners to buttons and text fields
     public void addListeners() {
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +173,23 @@ public class MemoryFragment extends Fragment {
         });
     }
 
-    private Calendar generateMemoryDate() {
+    // initialize member variables with their respective view items
+    private void linkUpViewItems() {
+        mMemoryTitle = (EditText) getView().findViewById(R.id.titleEditText);
+        mMemoryPlace = (EditText) getView().findViewById(R.id.placeEditText);
+        mMemoryDate = (CalendarView) getView().findViewById(R.id.calendarView);
+        mPeopleList = (EditText) getView().findViewById(R.id.peopleEditText);
+        mCameraButton = (ImageButton) getView().findViewById(R.id.cameraButton);
+        mGalleryButton = (ImageButton) getView().findViewById(R.id.galleryButton);
+        mMemoryDescription = (EditText) getView().findViewById(R.id.memoryEditText);
+        mSaveButton = (Button) getView().findViewById(R.id.saveButton);
+        mCancelButton = (Button) getView().findViewById(R.id.cancelButton);
+        mDeleteButton = (Button) getView().findViewById(R.id.deleteButton);
+        mDeleteButton.setVisibility(View.INVISIBLE);
+        mMemoryImage = (ImageView) getView().findViewById(R.id.imageView);
+    }
+
+    private Calendar generateCalendarObject() {
         return new Calendar() {
             @Override
             public void add(int field, int value) {
@@ -224,12 +233,13 @@ public class MemoryFragment extends Fragment {
         };
     }
 
+    // get the orientation of images from the gallery
     public static int getOrientation(Context context, Uri photoUri) {
         /* it's on the external media. */
         Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
 
-        if (cursor.getCount() != 1) {
+        if (cursor == null || cursor.getCount() != 1) {
             return -1;
         }
 
@@ -237,6 +247,7 @@ public class MemoryFragment extends Fragment {
         return cursor.getInt(0);
     }
 
+    // set the image view with an image with proper orientation
     public void setImageView(ImageView imageView) {
         try {
             ExifInterface ei = new ExifInterface(mPhotoUri.getPath());
@@ -256,6 +267,8 @@ public class MemoryFragment extends Fragment {
                         break;
                     case ExifInterface.ORIENTATION_ROTATE_270:
                         rotate = 270;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -288,9 +301,10 @@ public class MemoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    
+
+    // get the true file path for images stored in the gallery
     public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
         assert cursor != null;
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -384,6 +398,7 @@ public class MemoryFragment extends Fragment {
     }
 
     @Override
+    // get results from intent to camera or gallery
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
