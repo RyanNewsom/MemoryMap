@@ -1,7 +1,13 @@
 package kylefrisbie.com.memorymap.presentation;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
@@ -74,8 +80,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mMemories.set(position, memory);
             mMarkers.get(position).setTitle(memory.getTitle());
             mMarkers.get(position).setSnippet("" + getFormattedTime(memory.getDate()));
-            if(mViewedMarker != null){
-                if(mViewedMarker.isInfoWindowShown()){
+            if (mViewedMarker != null) {
+                if (mViewedMarker.isInfoWindowShown()) {
                     mViewedMarker.hideInfoWindow();
                     mViewedMarker.showInfoWindow();
                 }
@@ -117,6 +123,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void addListeners() {
+        addButtonListeners(false);
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
@@ -136,7 +143,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     mUserLocationInitiallyFound = true;
                     goToLocation(location);
                 }
-
 
             }
         });
@@ -209,9 +215,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private int getMemoryMarkerPosition(String markerID) {
-        for(int i = 0; i < mMarkers.size(); i++){
+        for (int i = 0; i < mMarkers.size(); i++) {
             Marker currentMarker = mMarkers.get(i);
-            if(markerID.equals(currentMarker.getId())){
+            if (markerID.equals(currentMarker.getId())) {
                 mMemoryMarkerID = markerID;
                 return i;
             }
@@ -227,6 +233,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mSearchMemories = new ArrayList<>(mMemories);
         mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mSearchMemories);
         mSearchView.setAdapter(mCustomAdapter);
+
+        // check to see if location services are enabled
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            enableGPS();
+        }
     }
 
     private void setupUI() {
@@ -248,6 +261,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     /**
      * Viewing/editing a memory
+     *
      * @param memory
      */
     private void openMemoryFragment(Memory memory) {
@@ -261,9 +275,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     /**
      * Adding new memory
+     *
      * @param location
      */
-    private void openMemoryFragment(Location location){
+    private void openMemoryFragment(Location location) {
         Bundle bundle = new Bundle();
         double[] array = new double[2];
         array[0] = location.getLatitude();
@@ -277,6 +292,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     /**
      * Adds a memory to the map, also records the memories marker for future reference
+     *
      * @param newMemory
      */
     private void addMemory(Memory newMemory) {
@@ -288,11 +304,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
-                        .snippet("" + theDate));
+                .snippet("" + theDate));
 
         mMarkers.add(newMarker);
         mMemories.add(newMemory);
-        if(mCustomAdapter != null) {
+        if (mCustomAdapter != null) {
             mCustomAdapter.notifyDataSetChanged();
         }
     }
@@ -313,17 +329,34 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(location.getLatitude(), location.getLongitude()), mMap.getMaxZoomLevel() - 5, 0, 0)));
     }
 
-    private int getLocationOfMemory(Memory theMemory){
-        for(int i = 0; i < mMemories.size(); i++){
-            if(theMemory.getId().equals(mMemories.get(i).getId())){
+    private int getLocationOfMemory(Memory theMemory) {
+        for (int i = 0; i < mMemories.size(); i++) {
+            if (theMemory.getId().equals(mMemories.get(i).getId())) {
                 return i;
             }
         }
         return -1;
     }
 
-    private void addButtonListeners(Boolean isLocationAvail){
-        if(isLocationAvail){
+    // provide a dialog notifying user to enable gps, bring user to location services
+    private void enableGPS() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Location Services Not Active");
+        builder.setMessage("Please enable Location Services and GPS");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Show location settings when the user acknowledges the alert dialog
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        Dialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    private void addButtonListeners(Boolean isLocationAvail) {
+        if (isLocationAvail) {
             mMyLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -337,19 +370,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     openMemoryFragment(mUserLocation);
                 }
             });
-        }
-        else {
+        } else {
             mMyLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    enableGPS();
                 }
             });
 
             mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+                    enableGPS();
                 }
             });
         }
