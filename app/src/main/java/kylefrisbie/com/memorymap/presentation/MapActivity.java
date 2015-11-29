@@ -1,10 +1,14 @@
 package kylefrisbie.com.memorymap.presentation;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -174,9 +178,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
-        mSearchView.setOnClickListener(new View.OnClickListener() {
+        mSearchView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Memory selectedMemory = (Memory) parent.getItemAtPosition(position);
+                int loc = getLocationOfMemory(selectedMemory);
+                Marker selectedMarker = mMarkers.get(loc);
+                Location location = new Location("");
+                location.setLatitude(selectedMemory.getLatitude());
+                location.setLongitude(selectedMemory.getLongitude());
+                goToLocation(location);
+                selectedMarker.showInfoWindow();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -310,5 +327,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return -1;
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
 }
