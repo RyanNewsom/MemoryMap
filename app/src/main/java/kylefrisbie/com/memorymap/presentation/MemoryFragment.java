@@ -1,8 +1,9 @@
 package kylefrisbie.com.memorymap.presentation;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -18,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -69,7 +69,7 @@ public class MemoryFragment extends Fragment {
         if (mMemory.getPhotoURI() != null) {
             mPhotoUri = Uri.parse(mMemory.getPhotoURI());
             mMemoryImage.setImageURI(mPhotoUri);
-            orientImageView(mMemoryImage);
+            setImageView(mMemoryImage);
         }
     }
 
@@ -224,26 +224,53 @@ public class MemoryFragment extends Fragment {
         };
     }
 
-    public void orientImageView(ImageView imageView) {
+    public static int getOrientation(Context context, Uri photoUri) {
+        /* it's on the external media. */
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+        if (cursor.getCount() != 1) {
+            return -1;
+        }
+
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
+
+    public void setImageView(ImageView imageView) {
         try {
             ExifInterface ei = new ExifInterface(mPhotoUri.getPath());
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
+            int orientation;
             int rotate = 0;
 
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
+            if (mPhotoUri.toString().contains("content")) {
+                rotate = getOrientation(this.getContext(), mPhotoUri);
+            } else {
+                orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotate = 90;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotate = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotate = 270;
+                        break;
+                }
             }
 
-            Bitmap bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
+            Bitmap bitmap;
+
+            if (mPhotoUri.toString().contains("content")) {
+                String path = getRealPathFromURI(mPhotoUri);
+                bitmap = BitmapFactory.decodeFile(path);
+            } else if (mPhotoUri.toString().contains("file")) {
+                String path = mPhotoUri.toString().replace("file://", "");
+                bitmap = BitmapFactory.decodeFile(path);
+            } else {
+                bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
+            }
 
             if (rotate != 0) {
                 int w = bitmap.getWidth();
@@ -261,7 +288,15 @@ public class MemoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
+        assert cursor != null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
     /**
      * Create a file Uri for saving an image or video
@@ -356,11 +391,12 @@ public class MemoryFragment extends Fragment {
                     if (null != data) {
                         mPhotoUri = data.getData();
                         mMemoryImage.setImageURI(mPhotoUri);
+                        setImageView(mMemoryImage);
                     }
                     break;
                 case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
                     if (mPhotoUri != null) {
-                        mMemoryImage.setImageURI(mPhotoUri);
+                        setImageView(mMemoryImage);
                     }
                 default:
                     break;
