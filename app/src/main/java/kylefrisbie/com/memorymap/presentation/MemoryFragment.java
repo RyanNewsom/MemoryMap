@@ -288,7 +288,7 @@ public class MemoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
+    
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);

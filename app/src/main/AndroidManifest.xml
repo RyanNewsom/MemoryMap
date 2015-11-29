@@ -18,7 +18,7 @@
     <application
         android:name="com.orm.SugarApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -37,15 +37,16 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".presentation.MapActivity"
-            android:label="@string/title_activity_map"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".presentation.TabbedActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_tabbed"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.NavigatorActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
