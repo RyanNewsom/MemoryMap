@@ -226,25 +226,17 @@ public class MemoryFragment extends Fragment {
 
     public void orientImageView(ImageView imageView) {
         try {
-            ExifInterface exif = new ExifInterface(mPhotoUri.getEncodedPath());
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
+            ExifInterface ei = new ExifInterface(mPhotoUri.getPath());
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
             int rotate = 0;
 
-            switch (exifOrientation) {
+            switch (orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     rotate = 90;
-                    break;
-
                 case ExifInterface.ORIENTATION_ROTATE_180:
                     rotate = 180;
-                    break;
-
                 case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
             }
 
             Bitmap bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
