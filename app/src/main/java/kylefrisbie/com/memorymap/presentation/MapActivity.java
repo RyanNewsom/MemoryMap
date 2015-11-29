@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -135,8 +134,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     mAddMemoryButton.setImageResource(R.drawable.add_memory_icon);
                 } else {
                     addButtonListeners(false);
-                    mMyLocationButton.setImageResource(R.drawable.mylocationicon_gray);
-                    mAddMemoryButton.setImageResource(R.drawable.addmemoryicon_gray);
+                    mMyLocationButton.setImageResource(R.drawable.my_location_icon_gray);
+                    mAddMemoryButton.setImageResource(R.drawable.add_memory_icon_gray);
                 }
 
                 if (location != null && !mUserLocationInitiallyFound) {
@@ -386,5 +385,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             });
         }
     }
-
 }
