@@ -56,8 +56,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMemoryAdded(Memory memory) {
         addMemory(memory);
-        int position = getLocationOfMemory(memory);
-        mMemories.set(position, memory);
         mCustomAdapter = new SearchListAdapter(this, R.layout.itemlistrow, mMemories);
         mSearchView.setAdapter(mCustomAdapter);
     }
@@ -264,10 +262,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
      */
     private void addMemory(Memory newMemory) {
         Marker newMarker;
-        if(mCustomAdapter != null) {
-            mCustomAdapter.add(newMemory);
-            mCustomAdapter.notifyDataSetChanged();
-        }
+
         String theDate = getFormattedTime(newMemory.getDate());
 
         LatLng latLng = new LatLng(newMemory.getLatitude(), newMemory.getLongitude());
@@ -278,6 +273,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         mMarkers.add(newMarker);
         mMemories.add(newMemory);
+        if(mCustomAdapter != null) {
+            mCustomAdapter.notifyDataSetChanged();
+        }
     }
 
     private String getFormattedTime(Calendar date) {
