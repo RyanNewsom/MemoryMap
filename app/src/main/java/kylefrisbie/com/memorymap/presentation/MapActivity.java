@@ -3,7 +3,6 @@ package kylefrisbie.com.memorymap.presentation;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -128,8 +127,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     mAddMemoryButton.setImageResource(R.drawable.add_memory_icon);
                 } else {
                     addButtonListeners(false);
-                    mMyLocationButton.setImageResource(R.drawable.mylocationicon_gray);
-                    mAddMemoryButton.setImageResource(R.drawable.addmemoryicon_gray);
+                    mMyLocationButton.setImageResource(R.drawable.my_location_icon_gray);
+                    mAddMemoryButton.setImageResource(R.drawable.add_memory_icon_gray);
                 }
 
                 if (location != null && !mUserLocationInitiallyFound) {
@@ -206,6 +205,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+    }
+
+    private void addButtonListeners(Boolean isLocationAvail){
+        if(isLocationAvail){
+            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLocation(mUserLocation);
+                }
+            });
+
+            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openMemoryFragment(mUserLocation);
+                }
+            });
+        }
+        else {
+            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
     }
 
     private int getMemoryMarkerPosition(String markerID) {
@@ -321,38 +353,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
         return -1;
     }
-
-    private void addButtonListeners(Boolean isLocationAvail){
-        if(isLocationAvail){
-            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goToLocation(mUserLocation);
-                }
-            });
-
-            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openMemoryFragment(mUserLocation);
-                }
-            });
-        }
-        else {
-            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    
-                }
-            });
-        }
-    }
-
 }

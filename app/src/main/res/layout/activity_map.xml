@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/my_location_button"
-        android:src="@drawable/mylocationicon_gray"
+        android:src="@drawable/my_location_icon_gray"
         android:background="#00ffffff"
         android:paddingRight="16dp"
         android:paddingBottom="6dp"
@@ -33,7 +33,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/addmemoryicon_gray"
+        android:src="@drawable/add_memory_icon_gray"
         android:background="#00ffffff"
         android:paddingRight="18dp"
         android:paddingBottom="16dp" />
