@@ -100,6 +100,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMemories = new ArrayList<>();
         setContentView(R.layout.activity_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -218,7 +219,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void populateMemories(List<Memory> theMemories) {
-        mMemories = theMemories;
         mMarkers = new ArrayList<>();
         if (theMemories != null) {
             for (int i = 0; i < theMemories.size(); i++) {
@@ -277,6 +277,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .snippet("" + theDate));
 
         mMarkers.add(newMarker);
+        mMemories.add(newMemory);
     }
 
     private String getFormattedTime(Calendar date) {
