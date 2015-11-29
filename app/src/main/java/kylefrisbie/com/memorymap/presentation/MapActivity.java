@@ -122,26 +122,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onMyLocationChange(Location location) {
                 mUserLocation = location;
 
+                if (location != null) {
+                    addButtonListeners(true);
+                    mMyLocationButton.setImageResource(R.drawable.my_location_icon);
+                    mAddMemoryButton.setImageResource(R.drawable.add_memory_icon);
+                } else {
+                    addButtonListeners(false);
+                    mMyLocationButton.setImageResource(R.drawable.mylocationicon_gray);
+                    mAddMemoryButton.setImageResource(R.drawable.addmemoryicon_gray);
+                }
+
                 if (location != null && !mUserLocationInitiallyFound) {
                     mUserLocationInitiallyFound = true;
                     goToLocation(location);
                 }
+
+
             }
         });
 
-        mMyLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToLocation(mUserLocation);
-            }
-        });
-
-        mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMemoryFragment(mUserLocation);
-            }
-        });
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -323,9 +322,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return -1;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    private void addButtonListeners(Boolean isLocationAvail){
+        if(isLocationAvail){
+            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLocation(mUserLocation);
+                }
+            });
+
+            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openMemoryFragment(mUserLocation);
+                }
+            });
+        }
+        else {
+            mMyLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            mAddMemoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
+        }
     }
 
 }

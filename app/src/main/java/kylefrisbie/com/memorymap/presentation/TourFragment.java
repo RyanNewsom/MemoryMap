@@ -31,9 +31,4 @@ public class TourFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(mLayoutId, container, false);
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 }

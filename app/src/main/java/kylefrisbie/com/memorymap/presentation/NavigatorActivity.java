@@ -11,8 +11,8 @@ public class NavigatorActivity extends AppCompatActivity {
 
     private boolean mTakeToTutorial;
     private SharedPreferences mPrefs;
-    public static String PREFS_NAME = "MEMORYPREFS";
-    public static String TAKE_TO_TUTORIAL = "TUTORIAL DONE";
+    public static final String PREFS_NAME = "MEMORYPREFS";
+    public static final String TAKE_TO_TUTORIAL = "TUTORIAL DONE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
