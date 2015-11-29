@@ -23,7 +23,7 @@ import kylefrisbie.com.memorymap.model.Memory;
  */
 public class SearchListAdapter extends ArrayAdapter<Memory> {
     private LayoutInflater layoutInflater;
-    List<Memory> mMemorys;
+    List<Memory> mMemories;
 
     private Filter mFilter = new Filter() {
         @Override
@@ -37,7 +37,7 @@ public class SearchListAdapter extends ArrayAdapter<Memory> {
 
             if (constraint != null) {
                 ArrayList<Memory> suggestions = new ArrayList<Memory>();
-                for (Memory memory : mMemorys) {
+                for (Memory memory : mMemories) {
                     // Note: change the "contains" to "startsWith" if you only want starting matches
                     if (memory.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         suggestions.add(memory);
@@ -59,20 +59,20 @@ public class SearchListAdapter extends ArrayAdapter<Memory> {
                 addAll((ArrayList<Memory>) results.values);
             } else {
                 // no filter, add entire original list back in
-                addAll(mMemorys);
+                addAll(mMemories);
             }
             notifyDataSetChanged();
         }
     };
 
-    public SearchListAdapter(Context context, int textViewResourceId, List<Memory> memorys) {
-        super(context, textViewResourceId, memorys);
-        // copy all the memorys into a master list
-        if(memorys == null) {
-            memorys = new ArrayList<>();
+    public SearchListAdapter(Context context, int textViewResourceId, List<Memory> memories) {
+        super(context, textViewResourceId, memories);
+        // copy all the memories into a master list
+        if(memories == null) {
+            memories = new ArrayList<>();
         }
-            mMemorys = new ArrayList<>(memorys.size());
-            mMemorys.addAll(memorys);
+            mMemories = new ArrayList<>(memories.size());
+            mMemories.addAll(memories);
         layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
