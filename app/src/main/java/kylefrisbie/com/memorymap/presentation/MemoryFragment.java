@@ -117,6 +117,7 @@ public class MemoryFragment extends Fragment {
         mGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // intent to bring user to gallery for photo choices
                 Intent galleryIntent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -124,6 +125,7 @@ public class MemoryFragment extends Fragment {
             }
         });
 
+        // make memory image clickable so it can be expanded to full screen view
         mMemoryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +236,6 @@ public class MemoryFragment extends Fragment {
 
     // get the orientation of images from the gallery
     public static int getOrientation(Context context, Uri photoUri) {
-        /* it's on the external media. */
         Cursor cursor = context.getContentResolver().query(photoUri,
                 new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
 
@@ -274,6 +275,7 @@ public class MemoryFragment extends Fragment {
 
             Bitmap bitmap;
 
+            // check to see if image is coming from gallery storage, camera, or memory
             if (mPhotoUri.toString().contains("content")) {
                 String path = getRealPathFromURI(mPhotoUri);
                 bitmap = BitmapFactory.decodeFile(path);
@@ -284,6 +286,7 @@ public class MemoryFragment extends Fragment {
                 bitmap = BitmapFactory.decodeFile(mPhotoUri.toString());
             }
 
+            // rotate the image if it isn't in correct orientation
             if (rotate != 0) {
                 int w = bitmap.getWidth();
                 int h = bitmap.getHeight();
@@ -294,6 +297,8 @@ public class MemoryFragment extends Fragment {
                 // Rotating Bitmap & convert to ARGB_8888, required by tess
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
                 bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+                // repopulate imageView with newly rotated image
                 imageView.setImageBitmap(bitmap);
             }
         } catch (IOException e) {
@@ -311,24 +316,15 @@ public class MemoryFragment extends Fragment {
         return cursor.getString(column_index);
     }
 
-    /**
-     * Create a file Uri for saving an image or video
-     */
+    // Create a file Uri for saving an image or video
     private Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /**
-     * Create a File for saving an image or video
-     */
+    // Create a File for saving an image or video
     private File getOutputMediaFile(int type) {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "MemoryMap");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
