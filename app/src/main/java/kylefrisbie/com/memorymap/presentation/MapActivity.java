@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,9 +38,9 @@ import kylefrisbie.com.memorymap.model.Memory;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, OnMemoryChangedListener {
 
-    public static String MEMORY_ID = "MEMORY_ID";
-    public static String MARKER_ID = "MARKER_ID";
-    public static String LATLNGARRAY = "LATLNG";
+    public static final String MEMORY_ID = "MEMORY_ID";
+    public static final String MARKER_ID = "MARKER_ID";
+    public static final String LATLNGARRAY = "LATLNG";
 
     private MemoryController mController;
     private GoogleMap mMap;
@@ -293,7 +294,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         newMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title(newMemory.getTitle())
-                .snippet("" + theDate));
+                        .snippet("" + theDate));
 
         mMarkers.add(newMarker);
         mMemories.add(newMemory);
@@ -320,7 +321,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private int getLocationOfMemory(Memory theMemory){
         for(int i = 0; i < mMemories.size(); i++){
-            if(theMemory.getId() == mMemories.get(i).getId()){
+            if(theMemory.getId().equals(mMemories.get(i).getId())){
                 return i;
             }
         }
