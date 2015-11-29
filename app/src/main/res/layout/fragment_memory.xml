@@ -154,9 +154,9 @@
                 android:id="@+id/cameraButton"
                 android:src="@drawable/ic_camera_white_48dp"
                 android:background="#8800c8"
-                android:layout_below="@+id/placeEditText"
-                android:layout_alignLeft="@+id/galleryButton"
-                android:layout_alignStart="@+id/galleryButton" />
+                android:layout_below="@+id/titleEditText"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -164,9 +164,9 @@
                 android:id="@+id/galleryButton"
                 android:src="@drawable/ic_image_white_48dp"
                 android:background="#303F9F"
-                android:layout_below="@+id/peopleEditText"
-                android:layout_alignRight="@+id/imageView"
-                android:layout_alignEnd="@+id/imageView" />
+                android:layout_alignTop="@+id/memoryTextView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 
